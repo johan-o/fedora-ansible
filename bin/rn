@@ -1,0 +1,14 @@
+rename "s/ /-/g" *
+rename "s/_/-/g" *
+rename "s/–/-/g" *
+rename "s/://g" *
+rename "s/\(//g" *
+rename "s/\)//g" *
+rename "s/\[//g" *
+rename "s/\]//g" *
+rename 's/"//g' *
+rename "s/'//g" *
+rename "s/,//g" *
+rename "y/A-Z/a-z/" *
+rename "s/---/--/g" *
+rename "s/-‎--/--/g" *
