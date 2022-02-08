@@ -1,5 +1,5 @@
 # installing oh-my-zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone https://github.com/ohmyzsh/ohmyzsh $HOME/.oh-my-zsh
 
 # installing zsh plugins
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
@@ -10,3 +10,6 @@ cp .zshrc ~
 cp .vimrc ~
 cp .tmux.conf ~
 cp -r bin ~
+
+# Changing shell to zsh
+chsh -s $(which zsh)
