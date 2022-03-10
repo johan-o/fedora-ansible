@@ -16,7 +16,11 @@ fi
 # checking if file exists
 if ! [ -f "$filename" ]; then
 	touch $filename
-	echo "# To Do List $(date -d $1days +'%A %F')" > $filename
+	if [ $# -lt 1 ]; then
+		echo "# To Do List $(date +'%A %F')" > $filename
+	else
+		echo "# To Do List $(date -d $1days +'%A %F')" > $filename
+	fi
 	cat $tpath/header.md >> $filename
 fi
 
