@@ -6,11 +6,14 @@ n=`tput sgr0`
 echo -e "${b}Enabling parallel downloads for dnf ${n}\n"
 sudo cp ./dnf.conf /etc/dnf/dnf.conf
 
+echo -e "${b}Removing unnecessary preinstalled packages ${n}\n"
+sudo dnf remove -y $(cat lists/useless)
+
 echo -e "${b}Installing (dnf) packages from lists ${n}\n"
 sudo dnf install -y $(cat ./lists/packages/*)
 
-echo -e "${b}Removing unnecessary preinstalled packages ${n}\n"
-sudo dnf remove -y $(cat lists/useless)
+echo -e "${b}Installing kvm${n}\n"
+bash ./virtualization.sh
 
 echo -e "${b}Removing libreoffice${n}\n"
 sudo dnf remove -y '*libreoffice*'
