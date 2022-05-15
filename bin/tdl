@@ -6,6 +6,9 @@ if ! [ -d "$tpath" ]; then
 	tpath="$HOME/Documents/todo-lists"
 fi
 
+# update git repo
+cd $tpath && git pull
+
 # getting path + name of list
 if [ $# -lt 1 ]; then
 	filename="$tpath/$(date +%F).md"
@@ -24,4 +27,4 @@ if ! [ -f "$filename" ]; then
 	cat $tpath/header.md >> $filename
 fi
 
-vim $filename
+vim $filename && git add * && git commit && git push
