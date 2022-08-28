@@ -11,9 +11,7 @@ export HOMEBREW_NO_ANALYTICS=1
 alias c="clear"
 alias q="exit"
 
-alias cqtr="cd /home/jmo/Documents/cqtr"
-
-alias attu="ssh johano@attu.cs.washington.edu"
+alias cqtr="cd $HOME/Documents/cqtr"
 
 export PATH="$HOME/bin:/usr/local/sbin:$PATH"
 export EDITOR="vim"
@@ -33,19 +31,6 @@ if [ "$TMUX" = "" ]; then sysinfo; fi
 
 alias open='xdg-open'
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/jmo/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/jmo/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/jmo/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/jmo/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
 alias gs='git status'
+
+PROMPT="$fg[white]%}$USER@%{$fg[white]%}%m ${PROMPT}"
