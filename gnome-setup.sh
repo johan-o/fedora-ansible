@@ -15,6 +15,7 @@ gsettings set org.gnome.desktop.interface clock-show-date true
 
 # dark theme
 gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark
+gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 
 # disable hot corner
 gsettings set org.gnome.desktop.interface enable-hot-corners false
