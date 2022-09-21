@@ -1,19 +1,22 @@
 #!/bin/bash
 
 # path to directory of lists
-tpath='/home/jmo/Documents/todo-lists'
-if ! [ -d "$tpath" ]; then
-	tpath="$HOME/Documents/todo-lists"
+if ! [ -d "$tdir" ]; then
+	tdir="$HOME/Documents/todo-lists"
+	tpath="$tdir/$(date +%Y)/$(date +%m)"
 fi
 
 # update git repo
-cd $tpath && git pull
+cd $tdir && git pull
+
+# make directories recursively
+mkdir -p $tpath
 
 # getting path + name of list
 if [ $# -lt 1 ]; then
 	filename="$tpath/$(date +%F).md"
 else
-	filename="$tpath/$(date -d $1days +%F).md"
+	filename="$tpath/$(date -v $1d +%F).md"
 fi
 
 # checking if file exists
@@ -22,9 +25,10 @@ if ! [ -f "$filename" ]; then
 	if [ $# -lt 1 ]; then
 		echo "# To Do List $(date +'%A %F')" > $filename
 	else
-		echo "# To Do List $(date -d $1days +'%A %F')" > $filename
+		echo "# To Do List $(date -v $1d +'%A %F')" > $filename
 	fi
-	cat $tpath/header.md >> $filename
+	cat $tdir/header.md >> $filename
 fi
 
+echo $filename
 vim $filename && git add * && git commit && git push
