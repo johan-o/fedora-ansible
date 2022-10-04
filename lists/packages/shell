@@ -5,3 +5,4 @@ vim
 util-linux
 util-linux-user
 lm_sensors
+ddcutil
