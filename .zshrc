@@ -32,5 +32,3 @@ if [ "$TMUX" = "" ]; then sysinfo; fi
 alias open='xdg-open'
 
 alias gs='git status'
-
-PROMPT="$fg[white]%}$USER@%{$fg[white]%}%m ${PROMPT}"
