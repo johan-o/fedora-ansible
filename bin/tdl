@@ -1,10 +1,21 @@
 #!/bin/bash
 
+if [ $# -lt 1 ]; then
+	offset="+0day"
+else 
+	offset="$1day"
+fi
+
+alias odate="date --date $offset"
+
 # path to directory of lists
 if ! [ -d "$tdir" ]; then
 	tdir="$HOME/Documents/todo-lists"
-	tpath="$tdir/$(date +%Y)/$(date +%m)"
 fi
+tpath="$tdir/$(date --date $offset +%Y)/$(date --date $offset +%m)"
+
+# getting path + name of list
+filename="$tpath/$(date --date $offset +%F).md"
 
 # update git repo
 cd $tdir && git pull
@@ -12,23 +23,16 @@ cd $tdir && git pull
 # make directories recursively
 mkdir -p $tpath
 
-# getting path + name of list
-if [ $# -lt 1 ]; then
-	filename="$tpath/$(date +%F).md"
-else
-	filename="$tpath/$(date -v $1d +%F).md"
-fi
-
 # checking if file exists
 if ! [ -f "$filename" ]; then
 	touch $filename
-	if [ $# -lt 1 ]; then
-		echo "# To Do List $(date +'%A %F')" > $filename
-	else
-		echo "# To Do List $(date -v $1d +'%A %F')" > $filename
-	fi
+	echo "# To Do List $(date --date $offset +'%A %F')" > $filename
 	cat $tdir/header.md >> $filename
 fi
 
-echo $filename
-vim $filename && git add * && git commit && git push
+# add switch to configure whether git commit & push is done
+vim $filename
+
+git add $filename
+git commit -m "updated $(date --date $offset +%F).md"
+git push
