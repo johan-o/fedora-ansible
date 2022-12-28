@@ -5,7 +5,7 @@ n=`tput sgr0`
 
 echo -e "${b}System information as of `date`${n}\n"
 echo -e "${b}Hostname:${n}\t`hostname` (`uname -srm`)"
-echo -e "${b}IP addresses:${n}\t`hostname -i`"
+echo -e "${b}IP addresses:${n}\t`hostname -I`"
 echo -e "${b}CPU load:${n}\t`cat /proc/loadavg | cut -d" " -f1-3`"
 echo -e "${b}Uptime:${n}\t\t`cat /proc/uptime | awk '{printf "%d days %02d:%02d:%02d", $1 / 3600 / 24, $1 / 3600 % 24, $1 / 60 % 60, $1 % 60}'`"
 echo -e "${b}Memory Usage:${n}\t`free -m | grep Mem | awk {'print int(int($3)/int($2) * 100)'}`% of `free -m | grep Mem | awk {'print int($2)'}` MiB"
