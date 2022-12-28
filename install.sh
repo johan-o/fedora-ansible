@@ -9,6 +9,18 @@ sudo cp ./dnf.conf /etc/dnf/dnf.conf
 echo -e "${b}Removing unnecessary preinstalled packages ${n}\n"
 sudo dnf remove -y $(cat lists/useless)
 
+echo -e "${b}Updating Computer${n}\n"
+sudo dnf update -y 
+
+echo -e "${b}Fixing Gnome Terminal${n}\n"
+bash ./gnome-terminal.sh
+
+echo -e "${b}Making tweaks to Gnome Shell${n}\n"
+bash ./gnome-setup.sh
+
+echo -e "${b}Installing Terminal and preferences${n}\n"
+bash ./terminal.sh
+
 echo -e "${b}Installing (dnf) packages from lists ${n}\n"
 sudo dnf install -y $(cat ./lists/packages/*)
 
@@ -32,20 +44,16 @@ sudo flatpak remote-modify --enable flathub
 echo -e "${b}Installing (flatpak) packages from lists ${n}\n"
 sudo flatpak install -y $(cat lists/flatpak)
 
-echo -e "${b}Updating Computer${n}\n"
-sudo dnf update -y 
-
-echo -e "${b}Fixing Gnome Terminal${n}\n"
-bash ./gnome-terminal.sh
-
-echo -e "${b}Making tweaks to Gnome Shell${n}\n"
-bash ./gnome-setup.sh
-
-echo -e "${b}Installing Terminal and preferences${n}\n"
-bash ./terminal.sh
-
 echo -e "${b}Installing ffmpeg and ffmpeg-libs${n}\n"
 sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 sudo dnf install -y ffmpeg ffmpeg-devel
+
+echo -e "${b}Installing Docker${n}\n"
+sudo dnf -y install dnf-plugins-core
+sudo dnf config-manager \
+    --add-repo \
+        https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-compose
+sudo systemctl enable --now docker
