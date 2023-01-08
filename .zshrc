@@ -30,5 +30,6 @@ export LESS_TERMCAP_us=$'\e[1;4;31m'
 if [ "$TMUX" = "" ]; then sysinfo; fi
 
 alias open='xdg-open'
+alias yiff='diff -y'
 
 alias gs='git status'
