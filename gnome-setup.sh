@@ -27,9 +27,6 @@ gsettings set org.gnome.shell.app-switcher current-workspace-only true
 # disable automatic suspend
 gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
 
-# enable automatic time
-gsettings set org.gnome.desktop.datetime automatic-timezone true
-
 # pinning apps
 dconf write /org/gnome/shell/favorite-apps "['org.gnome.Nautilus.desktop', 'firefox.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'com.visualstudio.code-oss.desktop', 'org.remmina.Remmina.desktop', 'virt-manager.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop']"
 

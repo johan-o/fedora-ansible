@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 b=`tput bold`
 n=`tput sgr0`
@@ -9,23 +10,14 @@ sudo cp ./dnf.conf /etc/dnf/dnf.conf
 echo -e "${b}Removing unnecessary preinstalled packages ${n}\n"
 sudo dnf remove -y $(cat lists/useless)
 
+echo -e "${b}Removing libreoffice${n}\n"
+sudo dnf remove -y '*libreoffice*'
+
 echo -e "${b}Updating Computer${n}\n"
 sudo dnf update -y 
 
-echo -e "${b}Fixing Gnome Terminal${n}\n"
-bash ./gnome-terminal.sh
-
-echo -e "${b}Making tweaks to Gnome Shell${n}\n"
-bash ./gnome-setup.sh
-
-echo -e "${b}Installing Terminal and preferences${n}\n"
-bash ./terminal.sh
-
 echo -e "${b}Installing (dnf) packages from lists ${n}\n"
 sudo dnf install -y $(cat ./lists/packages/*)
-
-echo -e "${b}Removing libreoffice${n}\n"
-sudo dnf remove -y '*libreoffice*'
 
 echo -e "${b}Installing Visual Studio Code${n}\n"
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
@@ -57,3 +49,13 @@ sudo dnf config-manager \
         https://download.docker.com/linux/fedora/docker-ce.repo
 sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-compose
 sudo systemctl enable --now docker
+
+echo -e "${b}Fixing Gnome Terminal${n}\n"
+bash ./gnome-terminal.sh
+
+echo -e "${b}Making tweaks to Gnome Shell${n}\n"
+bash ./gnome-setup.sh
+
+echo -e "${b}Installing Terminal and preferences${n}\n"
+bash ./terminal.sh
+
