@@ -250,4 +250,7 @@ texlive-zapfding
 texlive-zref
 texlive-algorithm2e
 texlive-enumitem
-calibre
+kicad
+kicad-packages3d
+ant
+ant-junit
