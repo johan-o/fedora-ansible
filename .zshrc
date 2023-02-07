@@ -8,7 +8,6 @@ source $ZSH/oh-my-zsh.sh
 
 export HOMEBREW_NO_ANALYTICS=1
 
-alias c="clear"
 alias q="exit"
 
 alias cqtr="cd $HOME/Documents/cqtr"
@@ -33,3 +32,6 @@ alias open='xdg-open'
 alias yiff='diff -y'
 
 alias gs='git status'
+
+alias c='xclip -selection clipboard'
+alias p='xclip -selection clipboard -o'
