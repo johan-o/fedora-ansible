@@ -9,3 +9,6 @@ command Q q
 cmap X x
 
 command Tdldone :s/\*\*/\*/g
+
+set hlsearch
+syntax on
