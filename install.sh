@@ -44,5 +44,9 @@ bash ./gnome-setup.sh
 echo -e "${b}Installing Terminal and preferences${n}\n"
 bash ./terminal.sh
 
+echo -e "${b}Adding Flathub remote${n}\n"
+sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+sudo flatpak remote-modify --enable flathub
+
 echo -e "${b}Installing (flatpak) packages from lists ${n}\n"
 sudo flatpak install -y $(cat lists/flatpak)
