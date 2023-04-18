@@ -30,15 +30,7 @@ echo -e "${b}Installing ffmpeg and ffmpeg-libs${n}\n"
 sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-sudo dnf install -y ffmpeg ffmpeg-devel
-
-echo -e "${b}Installing Docker${n}\n"
-sudo dnf -y install dnf-plugins-core
-sudo dnf config-manager \
-    --add-repo \
-        https://download.docker.com/linux/fedora/docker-ce.repo
-sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-compose
-sudo systemctl enable --now docker
+sudo dnf install -y ffmpeg ffmpeg-devel --allowerasing
 
 echo -e "${b}Installing (dnf) packages from lists ${n}\n"
 sudo dnf install -y $(cat ./lists/packages/*)
@@ -51,10 +43,6 @@ bash ./gnome-setup.sh
 
 echo -e "${b}Installing Terminal and preferences${n}\n"
 bash ./terminal.sh
-
-echo -e "${b}Adding Flathub remote${n}\n"
-sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo flatpak remote-modify --enable flathub
 
 echo -e "${b}Installing (flatpak) packages from lists ${n}\n"
 sudo flatpak install -y $(cat lists/flatpak)
