@@ -12,27 +12,31 @@ alias odate="date --date $offset"
 if ! [ -d "$tdir" ]; then
 	tdir="$HOME/Documents/todo-lists"
 fi
-tpath="$tdir/$(date --date $offset +%Y)/$(date --date $offset +%m)"
-
-# getting path + name of list
-filename="$tpath/$(date --date $offset +%F).md"
-
-# update git repo
-cd $tdir && git pull
 
 # make directories recursively
+tpath="$tdir/$(date --date $offset +%Y)/$(date --date $offset +%m)"
 mkdir -p $tpath
 
-# checking if file exists
-if ! [ -f "$filename" ]; then
-	touch $filename
-	echo "# To Do List $(date --date $offset +'%A %F')" > $filename
-	cat $tdir/header.md >> $filename
+# if not in a tmux pane, either attaches or creates session with name tdl
+if [ -z ${TMUX+x} ]; then
+	tmux new -A -s tdl -c $tpath
+else 
+	# getting path + name of list
+	filename="$tpath/$(date --date $offset +%F).md"
+	# update git repo
+	cd $tpath && git pull
+	
+	# checking if file exists
+	if ! [ -f "$filename" ]; then
+		touch $filename
+		echo "# To Do List $(date --date $offset +'%A %F')" > $filename
+		cat $tdir/header.md >> $filename
+	fi
+	
+	# add switch to configure whether git commit & push is done
+	vim $filename
+	
+	git add $filename
+	git commit -m "updated $(date --date $offset +%F).md"
+	git push
 fi
-
-# add switch to configure whether git commit & push is done
-vim $filename
-
-git add $filename
-git commit -m "updated $(date --date $offset +%F).md"
-git push
