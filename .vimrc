@@ -6,9 +6,13 @@ command Wq wq
 command WQ wq
 command W w
 command Q q
-cmap X x
 
 command Tdldone :s/\*\*/\*/g
 
 set hlsearch
 syntax on
+
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
