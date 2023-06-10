@@ -1,0 +1,80 @@
+- name: Configure DNF enabling parallel downloads
+  ansible.builtin.template:
+    src: "dnf.conf"
+    dest: "/etc/dnf/dnf.conf"
+    owner: root
+    group: root
+    mode: '0644'
+    
+- name: Remove unnecessary preinstalled DNF packages
+  ansible.builtin.dnf:
+    state: removed
+    name:
+      - gnome-contacts
+      - gnome-clocks
+      - gnome-maps
+      - gnome-photos
+      - totem
+      - mediawriter
+      - gnome-boxes
+      - yelp
+      - rhythmbox
+      - cheese
+      - gnome-tour
+      - gnome-text-editor
+
+- name: Remove LibreOffice packages
+  ansible.builtin.dnf:
+    state: removed
+    name:
+      - libreoffice-calc
+      - libreoffice-core
+      - libreoffice-data
+      - libreoffice-emailmerge
+      - libreoffice-filters
+      - libreoffice-graphicfilter
+      - libreoffice-gtk3
+      - libreoffice-gtk4
+      - libreoffice-help-en
+      - libreoffice-impress
+      - libreoffice-langpack-en
+      - libreoffice-ogltrans
+      - libreoffice-opensymbol-fonts
+      - libreoffice-pdfimport
+      - libreoffice-pyuno
+      - libreoffice-ure
+      - libreoffice-ure-common
+      - libreoffice-writer
+      - libreoffice-x11
+      - libreoffice-xsltfilter
+
+- name: Install distribution-gpg-keys
+  ansible.builtin.dnf:
+    name: distribution-gpg-keys
+    update_cache: true
+
+- name: Importing RPM Fusion free key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+
+- name: Importing RPM Fusion nonfree key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
+
+- name: Enable the RPM Fusion free repository
+  dnf:
+    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_major_version}}.noarch.rpm"
+    state: present
+
+- name: Enable the RPM Fusion nonfree repository
+  dnf:
+    name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ansible_distribution_major_version}}.noarch.rpm"
+    state: present
+
+- name: Update all DNF packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_cache: yes

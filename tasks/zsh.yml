@@ -1,0 +1,66 @@
+- name: "zsh: oh-my-zsh"
+  become: false
+  ansible.builtin.git:
+    repo: "https://github.com/ohmyzsh/ohmyzsh"
+    dest: /home/{{ lookup('env', 'USER') }}/.oh-my-zsh
+
+- name: "zsh: zsh-autosuggestions"
+  become: false
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-autosuggestions"
+    dest: /home/{{ lookup('env', 'USER') }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+- name: "zsh: zsh-syntax-highlighting"
+  become: false
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-syntax-highlighting"
+    dest: /home/{{ lookup('env', 'USER') }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+# Conf files
+- name: Copy .zshrc
+  ansible.builtin.template:
+    src: "zshrc"
+    dest: /home/{{ lookup('env', 'USER') }}/.zshrc
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    mode: '0755'
+    
+- name: Copy .vimrc
+  ansible.builtin.template:
+    src: "vimrc"
+    dest: /home/{{ lookup('env', 'USER') }}/.vimrc
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    mode: '0755'
+    
+- name: Copy .tmux.conf
+  ansible.builtin.template:
+    src: "tmux.conf"
+    dest: /home/{{ lookup('env', 'USER') }}/.tmux.conf
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    mode: '0755'
+
+- name: Create .config/htop directory
+  ansible.builtin.file:
+    path: /home/{{ lookup('env', 'USER') }}/.config/htop
+    state: directory
+
+- name: Copy .htoprc file
+  ansible.builtin.template:
+    src: zshrc
+    dest: /home/{{ lookup('env', 'USER') }}/.config/htop/htoprc
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    mode: '0644'
+    
+- name: Copy bin directory
+  ansible.posix.synchronize:
+    src: "./templates/bin"
+    dest: "/home/{{ lookup('env', 'USER') }}/"
+    recursive: true
+
+- name: Change default shell
+  ansible.builtin.user:
+    name: "{{ lookup('env', 'USER') }}"
+    shell: /bin/zsh

@@ -1,0 +1,10 @@
+- name: Install Steam
+  ansible.builtin.dnf:
+    name: steam
+    update_cache: true
+- name: Install useful packages for gayming
+  ansible.builtin.dnf:
+    name: 
+      - goverlay
+      - mangohud
+    update_cache: true

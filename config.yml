@@ -1,0 +1,10 @@
+# Configuration variables
+vscode: true
+docker: true
+
+gaymer: false
+
+kicad: true
+latex: true
+
+zsh: true

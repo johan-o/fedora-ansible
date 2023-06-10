@@ -1,0 +1,38 @@
+- name: Configure Fedora Workstation install
+  hosts: localhost
+  become: true
+
+  pre_tasks:
+    - name: Load configuration variables
+      ansible.builtin.include_vars: "{{ item }}"
+      loop:
+        - config.yml 
+
+    - name: Update DNF cache
+      ansible.builtin.dnf:
+        update_cache: true
+  
+  tasks:
+    - name: Set up DNF
+      ansible.builtin.import_tasks: tasks/dnf.yml
+
+    - name: Install VS Code
+      ansible.builtin.import_tasks: tasks/vscode.yml
+      when: vscode
+
+    - name: Install Steam
+      ansible.builtin.import_tasks: tasks/steam.yml
+      when: gaymer
+    
+    - name: Install Packages
+      ansible.builtin.import_tasks: tasks/packages.yml
+    
+    - name: Configure Gnome
+      ansible.builtin.import_tasks: tasks/gnome.yml
+
+    - name: Configure Gnome Terminal
+      ansible.builtin.import_tasks: tasks/gnome-terminal.yml
+    
+    - name: Configure zsh
+      ansible.builtin.import_tasks: tasks/zsh.yml
+      when: zsh
