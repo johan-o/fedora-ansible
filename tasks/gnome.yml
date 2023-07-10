@@ -1,7 +1,3 @@
-- name: Reset dconf recursively
-  become: false
-  ansible.builtin.shell: "dconf reset -f /"
-  
 - name: "Gnome: Configure keyboard layouts"
   become: false
   community.general.dconf:
@@ -134,4 +130,17 @@
   community.general.dconf:
     key: "/org/gnome/nautilus/default-folder-viewer"
     value: "'list-view'"
+    state: present
+
+# Timezone
+- name: "Set timezone to America/Los_Angeles"
+  community.general.timezone:
+    name: America/Los_Angeles
+
+# Extensions
+- name: "Gnome: Enable caffeine and workspace indicator extensions"
+  become: false
+  community.general.dconf:
+    key: "/org/gnome/shell/enabled-extensions"
+    value: "['background-logo@fedorahosted.org', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'caffeine@patapon.info']"
     state: present

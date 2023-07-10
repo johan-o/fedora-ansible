@@ -10,8 +10,11 @@
   ansible.builtin.dnf:
     state: removed
     name:
+      - gnome-characters
+      - gnome-connections
       - gnome-contacts
       - gnome-clocks
+      - gnome-fonts
       - gnome-maps
       - gnome-photos
       - totem

@@ -15,7 +15,7 @@ alias cqtr="cd $HOME/Documents/cqtr"
 export PATH="$HOME/bin:/$HOME/.local/bin:/usr/local/sbin:$PATH"
 export EDITOR="vim"
 
-RPROMPT="%(?..[%?]) %*"
+RPROMPT="%n@%m %(?..[%?]) %*"
 
 # fixing unreadable man
 export LESS_TERMCAP_mb=$'\e[1;32m'

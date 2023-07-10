@@ -28,11 +28,16 @@
       ansible.builtin.import_tasks: tasks/packages.yml
     
     - name: Configure Gnome
+      async: 45
+      poll: 0
       ansible.builtin.import_tasks: tasks/gnome.yml
 
     - name: Configure Gnome Terminal
+      async: 30
+      poll: 0
       ansible.builtin.import_tasks: tasks/gnome-terminal.yml
     
     - name: Configure zsh
+      async: 60
       ansible.builtin.import_tasks: tasks/zsh.yml
       when: zsh
