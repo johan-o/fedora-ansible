@@ -5,6 +5,13 @@
     value: "[('xkb', 'us'), ('xkb', 'se')]"
     state: present
   
+- name: "Gnome: Disable caps lock"
+  become: false
+  community.general.dconf:
+    key: "/org/gnome/desktop/input-sources/xkb-options"
+    value: "['caps:none']"
+    state: present
+  
 - name: "Gnome: Enable fractional scaling"
   become: false
   community.general.dconf:
