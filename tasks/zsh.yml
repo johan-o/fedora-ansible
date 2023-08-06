@@ -39,19 +39,6 @@
     group: "{{ lookup('env', 'USER') }}"
     mode: '0755'
 
-- name: Create .config/htop directory
-  become: false
-  ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.config/htop"
-    state: directory
-- name: Copy .htoprc file
-  ansible.builtin.template:
-    src: zshrc
-    dest: "{{ lookup('env', 'HOME') }}/.config/htop/htoprc"
-    owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
-    mode: '0644'
-    
 - name: Copy bin directory
   ansible.posix.synchronize:
     src: "./templates/bin"
