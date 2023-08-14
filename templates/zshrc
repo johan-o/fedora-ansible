@@ -31,9 +31,11 @@ export GROFF_NO_SGR=1
 if [ "$TMUX" = "" ]; then sysinfo; fi
 
 alias open='xdg-open'
-alias yiff='diff -y'
 
 alias gs='git status'
 
 alias c='xclip -selection clipboard'
 alias p='xclip -selection clipboard -o'
+
+# HiDPI tweaks for VS code
+alias codeHiDPI='code --enable-features=UseOzonePlatform --ozone-platform=wayland'
