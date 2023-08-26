@@ -1,0 +1,33 @@
+# Virtualization:
+- name: Configure /etc/default/grub
+  ansible.builtin.template:
+    src: "templates/grub"
+    dest: "/etc/default/grub"
+    owner: root
+    group: root
+    mode: '0644'
+  register: grubTemplate
+
+- name: Update grub
+  ansible.builtin.shell: sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+  when: grubTemplate.changed
+
+- name: Add user jmo to libvirt group
+  ansible.builtin.user:
+    name: "{{ lookup('env', 'USER') }}"
+    groups: libvirt
+    append: true
+
+# VFIO Stuff
+- name: Add VFIO modules to .conf file
+  ansible.builtin.template:
+    src: "vfio.conf"
+    dest: "/etc/modules-load.d/vfio.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  register: vfioConf
+
+- name: Update dracut
+  ansible.builtin.shell: dracut --regenerate-all --force
+  when: vfioConf.changed
