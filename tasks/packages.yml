@@ -205,6 +205,7 @@
       - texlive-mflogo-font
       - texlive-mfware
       - texlive-microtype
+      - texlive-minted
       - texlive-modes
       - texlive-mparhack
       - texlive-ms
