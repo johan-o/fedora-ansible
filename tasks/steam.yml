@@ -2,9 +2,10 @@
   ansible.builtin.dnf:
     name: steam
     update_cache: true
-- name: Install useful packages for gayming
+- name: Install gayming packages
   ansible.builtin.dnf:
     name: 
       - goverlay
       - mangohud
+      - dwarffortress
     update_cache: true
