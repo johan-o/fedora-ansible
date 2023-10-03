@@ -12,7 +12,7 @@
   ansible.builtin.shell: sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
   when: grubTemplate.changed
 
-- name: Add user jmo to libvirt group
+- name: Add user to libvirt group
   ansible.builtin.user:
     name: "{{ lookup('env', 'USER') }}"
     groups: libvirt
@@ -28,6 +28,15 @@
     mode: '0644'
   register: vfioConf
 
+- name: Add VFIO modules to .conf file to load early
+  ansible.builtin.template:
+    src: "10-vfio.conf"
+    dest: "/etc/dracut.conf.d/10-vfio.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  register: vfioConfLoadEarly
+
 - name: Update dracut
   ansible.builtin.shell: dracut --regenerate-all --force
-  when: vfioConf.changed
+  when: vfioConf.changed or vfioConfLoadEarly.changed
