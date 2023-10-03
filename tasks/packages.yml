@@ -206,6 +206,7 @@
       - texlive-mfware
       - texlive-microtype
       - texlive-minted
+      - texlive-minted-doc
       - texlive-modes
       - texlive-mparhack
       - texlive-ms
