@@ -38,9 +38,3 @@
     group: "{{ lookup('env', 'USER') }}"
     mode: '0644'
 
-- name: HiDPI tweaks for Wayland
-  when: vscodeHiDPI
-  ansible.posix.synchronize:
-    src: "./templates/code-HiDPI/"
-    dest: "{{ lookup('env', 'HOME') }}/.local/share/applications"
-    recursive: true

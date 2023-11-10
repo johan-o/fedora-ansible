@@ -1,6 +1,5 @@
 # Configuration variables
 vscode: true
-vscodeHiDPI: true
 
 docker: true
 

@@ -12,13 +12,6 @@
     value: "['caps:none']"
     state: present
   
-- name: "Gnome: Enable fractional scaling"
-  become: false
-  community.general.dconf:
-    key: "/org/gnome/mutter/experimental-features"
-    value: "['scale-monitor-framebuffer']"
-    state: present
-
 - name: "Gnome: Weekday in clock"
   become: false
   community.general.dconf:
@@ -38,13 +31,6 @@
   community.general.dconf:
     key: "/org/gnome/desktop/interface/clock-show-date"
     value: true
-    state: present
-
-- name: "Gnome: Dark GTK Theme"
-  become: false
-  community.general.dconf:
-    key: "/org/gnome/desktop/interface/gtk-theme"
-    value: "'Adwaita-dark'"
     state: present
 
 - name: "Gnome: Dark Color Scheme"
