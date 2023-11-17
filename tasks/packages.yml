@@ -24,7 +24,6 @@
       - geary
       - gnome-extensions-app
       - gnome-shell-extension-caffeine
-      - gnome-shell-extension-workspace-indicator
       - gnome-tweaks
       - htop
       - libheif
@@ -298,6 +297,7 @@
       - texlive-zapfchan
       - texlive-zapfding
       - texlive-zref
+      - texlive-blindtext
 
 - name: Add Flathub remote
   community.general.flatpak_remote:

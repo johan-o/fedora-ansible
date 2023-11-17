@@ -131,9 +131,9 @@
     name: America/Los_Angeles
 
 # Extensions
-- name: "Gnome: Enable caffeine and workspace indicator extensions"
+- name: "Gnome: Enable caffeine extension"
   become: false
   community.general.dconf:
     key: "/org/gnome/shell/enabled-extensions"
-    value: "['background-logo@fedorahosted.org', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'caffeine@patapon.info']"
+    value: "['background-logo@fedorahosted.org', 'caffeine@patapon.info']"
     state: present
