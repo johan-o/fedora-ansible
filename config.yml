@@ -9,3 +9,5 @@ kicad: true
 latex: true
 
 zsh: true
+
+tailscale: true

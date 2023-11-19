@@ -1,0 +1,22 @@
+- name: Add Tailscale repo (AlmaLinux)
+  ansible.builtin.shell: "sudo dnf config-manager --add-repo https://pkgs.tailscale.com/stable/rhel/{{ ansible_distribution_major_version }}/tailscale.repo"
+  when: >
+    (ansible_distribution == 'AlmaLinux')
+- name: Add Tailscale repo (Fedora)
+  ansible.builtin.shell: "sudo dnf config-manager --add-repo https://pkgs.tailscale.com/stable/fedora/tailscale.repo"
+  when: >
+    (ansible_distribution == 'Fedora')
+
+- name: Install Tailscale package (Fedora or AlmaLinux)
+  ansible.builtin.dnf:
+    name:
+      - tailscale
+  when: >
+    (ansible_distribution == 'AlmaLinux') or
+    (ansible_distribution == 'Fedora')
+
+- name: Enable tailscaled
+  ansible.builtin.systemd_service:
+    name: tailscaled
+    state: started
+    enabled: true

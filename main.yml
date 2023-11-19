@@ -20,6 +20,10 @@
       ansible.builtin.import_tasks: tasks/vscode.yml
       when: vscode
 
+    - name: Install Tailscale
+      ansible.builtin.import_tasks: tasks/tailscale.yml
+      when: tailscale
+
     - name: Install Steam
       ansible.builtin.import_tasks: tasks/steam.yml
       when: gaymer

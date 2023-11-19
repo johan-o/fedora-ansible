@@ -72,7 +72,7 @@
   become: false
   community.general.dconf:
     key: "/org/gnome/shell/favorite-apps"
-    value: "['org.gnome.Nautilus.desktop', 'firefox.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'com.visualstudio.code-oss.desktop', 'org.remmina.Remmina.desktop', 'virt-manager.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop']"
+    value: "['org.gnome.Nautilus.desktop', 'firefox.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.remmina.Remmina.desktop', 'com.parsecgaming.parsec.desktop', 'virt-manager.desktop']"
     state: present
 
 - name: "Gnome: Enable location services"
