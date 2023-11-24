@@ -306,8 +306,7 @@
     flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
 
 - name: Install Flatpak applications
-  async: 360
-  poll: 0
+  become: false
   community.general.flatpak:
     name:
       - cc.arduino.IDE2
