@@ -298,6 +298,13 @@
       - texlive-zapfding
       - texlive-zref
       - texlive-blindtext
+      - texlive-pgfplots
+      - texlive-pgfplots-doc
+      - texlive-standalone
+      - texlive-csvsimple
+      - texlive-csvsimple-doc
+      - texlive-ulem
+      - texlive-ulem-doc
 
 - name: Add Flathub remote
   community.general.flatpak_remote:
@@ -316,3 +323,4 @@
       - org.videolan.VLC
       - us.zoom.Zoom
       - com.parsecgaming.parsec
+      - org.musicbrainz.Picard
