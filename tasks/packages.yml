@@ -298,6 +298,8 @@
       - texlive-zapfding
       - texlive-zref
       - texlive-blindtext
+      - texlive-makecell
+      - texlive-makecell-doc
 
 - name: Add Flathub remote
   community.general.flatpak_remote:
