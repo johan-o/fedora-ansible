@@ -60,6 +60,8 @@
   when: latex
   ansible.builtin.dnf:
     name:
+      - texlive-tabularray
+      - texlive-ninecolors
       - texlive-algorithm2e
       - texlive-algorithms
       - texlive-alphalph
