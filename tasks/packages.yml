@@ -41,12 +41,13 @@
       - xclip
       - zsh
 
-- name: Install ffmpeg
+- name: Install ffmpeg and video drivers/codec
   ansible.builtin.dnf:
     name:
       - ffmpeg
-      - ffmpeg-libs
       - ffmpeg-devel
+      - ffmpeg-libs
+      - intel-media-driver
       - libavcodec-freeworld
     update_cache: true
     allowerasing: true
