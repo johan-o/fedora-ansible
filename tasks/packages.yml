@@ -45,7 +45,9 @@
   ansible.builtin.dnf:
     name:
       - ffmpeg
+      - ffmpeg-libs
       - ffmpeg-devel
+      - libavcodec-freeworld
     update_cache: true
     allowerasing: true
 
