@@ -62,6 +62,8 @@
   when: latex
   ansible.builtin.dnf:
     name:
+      - texlive-tabularray
+      - texlive-ninecolors
       - texlive-algorithm2e
       - texlive-algorithms
       - texlive-alphalph
@@ -307,6 +309,9 @@
       - texlive-csvsimple-doc
       - texlive-ulem
       - texlive-ulem-doc
+      - texlive-datetime2
+      - texlive-makecell
+      - texlive-makecell-doc
 
 - name: Add Flathub remote
   community.general.flatpak_remote:
