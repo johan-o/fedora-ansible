@@ -1,0 +1,47 @@
+- name: Create .config/Code/User directory
+  become: false
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.config/Code/User"
+    state: directory
+
+- name: Configure VS Code appearance (settings.json)
+  ansible.builtin.template:
+    src: settings.json
+    dest: "{{ lookup('env', 'HOME') }}/.config/Code/User/settings.json"
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    mode: '0644'
+
+- name: Configure VS Code keyboard shortcut
+  ansible.builtin.template:
+    src: keybindings.json
+    dest: "{{ lookup('env', 'HOME') }}/.config/Code/User/keybindings.json"
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    mode: '0644'
+
+- name: Get currently installed vscode extensions
+  ansible.builtin.command: 'code --list-extensions'
+  register: codeExtensions
+
+- name: Install VS Code vim
+  ansible.builtin.command: "code --install-extension {{ item }}"
+  with_items:
+    - vscodevim.vim
+  when: "'vim' not in codeExtensions.stdout"
+
+- name: Install VS Code python extensions
+  ansible.builtin.command: "code --install-extension {{ item }}"
+  with_items:
+    - ms-python.python
+    - ms-python.debugpy
+    - ms-python.vscode-pylance
+  when: "'ms-python.python' not in codeExtensions.stdout"
+
+- name: Install VS Code remote extensions
+  ansible.builtin.command: "code --install-extension {{ item }}"
+  with_items:
+    - ms-vscode-remote.remote-ssh
+    - ms-vscode-remote.remote-ssh-edit
+    - ms-vscode.remote-explorer
+  when: "'ms-vscode-remote.remote-ssh' not in codeExtensions.stdout"

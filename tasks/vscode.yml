@@ -15,26 +15,3 @@
   ansible.builtin.dnf:
     name: code
     update_cache: true
-
-- name: Create .config/Code/User directory
-  become: false
-  ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.config/Code/User"
-    state: directory
-
-- name: Configure VS Code appearance (settings.json)
-  ansible.builtin.template:
-    src: settings.json
-    dest: "{{ lookup('env', 'HOME') }}/.config/Code/User/settings.json"
-    owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
-    mode: '0644'
-
-- name: Configure VS Code keyboard shortcut
-  ansible.builtin.template:
-    src: keybindings.json
-    dest: "{{ lookup('env', 'HOME') }}/.config/Code/User/keybindings.json"
-    owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
-    mode: '0644'
-
