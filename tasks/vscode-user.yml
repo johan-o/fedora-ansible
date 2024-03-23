@@ -45,3 +45,10 @@
     - ms-vscode-remote.remote-ssh-edit
     - ms-vscode.remote-explorer
   when: "'ms-vscode-remote.remote-ssh' not in codeExtensions.stdout"
+
+- name: Install VS Code colored CSV extension
+  ansible.builtin.command: "code --install-extension {{ item }}"
+  with_items:
+    - mechatroner.rainbow-csv
+  when: "'mechatroner.rainbow-csv' not in codeExtensions.stdout"
+
