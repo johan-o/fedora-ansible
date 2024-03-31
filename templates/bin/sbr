@@ -1,4 +1,5 @@
 #~/bin/bash
+# Attempts to set the brightness of all attached monitors
 
 if [ $# -lt 1 ] || [ $# -gt 1 ]
 then
@@ -6,9 +7,7 @@ then
 	echo "        n is brightness in range [0,100]"
 	exit
 else
-	sudo ls > /dev/null
-	for i in $(sudo ddcutil detect | grep -i bus | grep -o '[0-9]*$')
-	do 
-		sudo ddcutil setvcp 10 $1 -b $i &
+	for i in $(ddcutil detect | grep -i bus | grep -o '[0-9]*$'); do 
+		ddcutil setvcp 10 $1 -b $i >/dev/null 2>&1 &
 	done
 fi
