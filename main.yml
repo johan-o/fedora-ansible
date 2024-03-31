@@ -16,6 +16,9 @@
     - name: Set up DNF
       ansible.builtin.import_tasks: tasks/dnf.yml
 
+    - name: Set up i2c
+      ansible.builtin.import_tasks: tasks/i2c.yml
+
     - name: Install VS Code
       ansible.builtin.import_tasks: tasks/vscode.yml
       when: vscode
@@ -37,11 +40,9 @@
       ansible.builtin.import_tasks: tasks/packages.yml
     
     - name: Configure Gnome
-      poll: 0
       ansible.builtin.import_tasks: tasks/gnome.yml
 
     - name: Configure Gnome Terminal
-      poll: 0
       ansible.builtin.import_tasks: tasks/gnome-terminal.yml
     
     - name: Configure zsh
