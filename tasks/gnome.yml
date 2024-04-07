@@ -40,6 +40,13 @@
     value: "'prefer-dark'"
     state: present
 
+- name: "Gnome: 24-hour clock"
+  become: false
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/clock-format"
+    value: "'24h'"
+    state: present
+
 - name: "Gnome: disable hot corner"
   become: false
   community.general.dconf:
