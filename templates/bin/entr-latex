@@ -1,0 +1,23 @@
+#/bin/bash
+# Script to automatically regenerate pdf from all latex files
+
+set -eu
+
+# $1 -- LaTeX file
+# $2 -- Optional comma-separated extensions
+
+if [ $# -eq 1 ] || [ $# -eq 2 ]; then
+ 	regex=".*\\.tex"
+	if [ $# -eq 2 ]; then
+		separated=$(echo "${2}" | sed 's/,/\\\|/g');
+		regex=".*\\.\\(${separated}\\)";
+	fi
+	find . -iregex "^${regex}$" | entr sh -c "lualatex --shell-escape ${1} && lualatex --shell-escape ${1}"
+	echo "${regex}";
+	exit
+else
+  echo "Usage: entr-latex file [extensions]"
+  echo "file:       LaTeX file name"
+  echo "extensions: Optional comma-separated file extensions"
+  exit 1
+fi

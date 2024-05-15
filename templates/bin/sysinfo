@@ -11,7 +11,7 @@ echo -e "${b}Uptime:${n}\t\t`cat /proc/uptime | awk '{printf "%d days %02d:%02d:
 echo -e "${b}Memory Usage:${n}\t`free -m | grep Mem | awk {'print int(int($3)/int($2) * 100)'}`% of `free -m | grep Mem | awk {'print int($2)'}` MiB"
 echo
 echo -e "${b}Active sessions:${n}\n`w | tail -n +2`"
-if [ -x zfs ];
+if [ -x "zfs list" ];
 then
 	echo
 	echo -e "${b}ZFS Pools:${n}\n`zpool status | grep -E '^ *(pool|errors|state)'`"
