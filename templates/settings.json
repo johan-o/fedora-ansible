@@ -16,5 +16,15 @@
     "vim.hlsearch": true,
     "explorer.confirmDragAndDrop": false,
     "redhat.telemetry.enabled": false,
-    "C_Cpp.intelliSenseEngine": "disabled"
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "vim.normalModeKeyBindings": [
+        {
+            "before": ["C-w", "v"],
+            "after": [":", "v", "s", "<Enter>"],
+        },
+        {
+            "before": ["C-w", "s"],
+            "after": [":", "s", "p", "<Enter>"],
+        },
+    ]
 }
