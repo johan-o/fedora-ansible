@@ -10,4 +10,6 @@ command Q q
 command Tdldone :s/\*\*/\*/g
 
 set hlsearch
+hi Search cterm=NONE ctermfg=White ctermbg=Red
+
 syntax on
