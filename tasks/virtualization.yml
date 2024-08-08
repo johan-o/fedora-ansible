@@ -1,0 +1,10 @@
+- name: Install virt-manager
+  ansible.builtin.dnf:
+    name:
+      - virt-manager
+
+- name: Add user to libvirt group
+  ansible.builtin.user:
+    append: true
+    name: "{{ lookup('env', 'USER') }}"
+    groups: libvirt

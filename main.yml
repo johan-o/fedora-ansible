@@ -35,6 +35,10 @@
     - name: Install Steam
       ansible.builtin.import_tasks: tasks/steam.yml
       when: gaymer
+
+    - name: Install libvirt, add user to libvirt group
+      ansible.builtin.import_tasks: tasks/virtualization.yml
+      when: virtualization
     
     - name: Install Packages
       ansible.builtin.import_tasks: tasks/packages.yml

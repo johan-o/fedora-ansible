@@ -49,9 +49,3 @@
   ansible.builtin.user:
     name: "{{ lookup('env', 'USER') }}"
     shell: /bin/zsh
-
-- name: Add user to libvirt group
-  ansible.builtin.user:
-    append: true
-    name: "{{ lookup('env', 'USER') }}"
-    groups: libvirt
