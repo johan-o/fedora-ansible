@@ -38,7 +38,6 @@
       - util-linux
       - util-linux-user
       - vim
-      - virt-manager
       - xclip
       - zsh
 
@@ -64,8 +63,7 @@
   when: latex
   ansible.builtin.dnf:
     name:
-      - texlive-tabularray
-      - texlive-ninecolors
+      - texlive-IEEEtran
       - texlive-algorithm2e
       - texlive-algorithms
       - texlive-alphalph
@@ -87,6 +85,7 @@
       - texlive-bidi
       - texlive-bigintcalc
       - texlive-bitset
+      - texlive-blindtext
       - texlive-bookman
       - texlive-bookmark
       - texlive-booktabs
@@ -100,28 +99,30 @@
       - texlive-circuitikz
       - texlive-cite
       - texlive-cm
-      - texlive-cmextra
       - texlive-cm-super
+      - texlive-cmextra
       - texlive-collection-basic
       - texlive-collection-fontsrecommended
       - texlive-colorprofiles
       - texlive-colortbl
       - texlive-courier
       - texlive-csquotes
+      - texlive-csvsimple
+      - texlive-csvsimple-doc
       - texlive-ctablestack
       - texlive-currfile
+      - texlive-datetime2
       - texlive-dehyph
       - texlive-dvipdfmx
       - texlive-dvips
       - texlive-ec
       - texlive-enctex
       - texlive-enumitem
-      - texlive-enumitem
       - texlive-epstopdf-pkg
       - texlive-eso-pic
       - texlive-etex
-      - texlive-etexcmds
       - texlive-etex-pkg
+      - texlive-etexcmds
       - texlive-etoolbox
       - texlive-euenc
       - texlive-euro
@@ -152,10 +153,9 @@
       - texlive-hologo
       - texlive-hycolor
       - texlive-hyperref
+      - texlive-hyph-utf8
       - texlive-hyphen-base
       - texlive-hyphenex
-      - texlive-hyph-utf8
-      - texlive-IEEEtran
       - texlive-ifmtarg
       - texlive-ifplatform
       - texlive-iftex
@@ -178,8 +178,8 @@
       - texlive-l3kernel
       - texlive-l3packages
       - texlive-latex
-      - texlive-latexconfig
       - texlive-latex-fonts
+      - texlive-latexconfig
       - texlive-letltxmacro
       - texlive-lib
       - texlive-lipsum
@@ -196,6 +196,8 @@
       - texlive-luaotfload
       - texlive-luatex
       - texlive-luatexbase
+      - texlive-makecell
+      - texlive-makecell-doc
       - texlive-makecmds
       - texlive-makeindex
       - texlive-manfnt-font
@@ -220,6 +222,7 @@
       - texlive-ncntrsbk
       - texlive-needspace
       - texlive-newtx
+      - texlive-ninecolors
       - texlive-ntheorem
       - texlive-oberdiek
       - texlive-palatino
@@ -227,9 +230,12 @@
       - texlive-parallel
       - texlive-pdfcolmk
       - texlive-pdfescape
+      - texlive-pdflscape
       - texlive-pdftex
       - texlive-pdftexcmds
       - texlive-pgf
+      - texlive-pgfplots
+      - texlive-pgfplots-doc
       - texlive-picture
       - texlive-placeins
       - texlive-plain
@@ -244,11 +250,11 @@
       - texlive-pst-node
       - texlive-pst-ovl
       - texlive-pst-plot
-      - texlive-pstricks
-      - texlive-pstricks-add
       - texlive-pst-text
       - texlive-pst-tools
       - texlive-pst-tree
+      - texlive-pstricks
+      - texlive-pstricks-add
       - texlive-pxfonts
       - texlive-qstest
       - texlive-ragged2e
@@ -261,9 +267,11 @@
       - texlive-showexpl
       - texlive-siunitx
       - texlive-soul
+      - texlive-standalone
       - texlive-stringenc
       - texlive-subfig
       - texlive-symbol
+      - texlive-tabularray
       - texlive-tex
       - texlive-tex-gyre
       - texlive-tex-gyre-math
@@ -280,6 +288,8 @@
       - texlive-translator
       - texlive-txfonts
       - texlive-ucharcat
+      - texlive-ulem
+      - texlive-ulem-doc
       - texlive-underscore
       - texlive-unicode-data
       - texlive-unicode-math
@@ -288,8 +298,8 @@
       - texlive-utopia
       - texlive-varwidth
       - texlive-wasy
-      - texlive-wasysym
       - texlive-wasy-type1
+      - texlive-wasysym
       - texlive-wrapfig
       - texlive-xcolor
       - texlive-xdvi
@@ -303,17 +313,6 @@
       - texlive-zapfchan
       - texlive-zapfding
       - texlive-zref
-      - texlive-blindtext
-      - texlive-pgfplots
-      - texlive-pgfplots-doc
-      - texlive-standalone
-      - texlive-csvsimple
-      - texlive-csvsimple-doc
-      - texlive-ulem
-      - texlive-ulem-doc
-      - texlive-datetime2
-      - texlive-makecell
-      - texlive-makecell-doc
 
 - name: Add Flathub remote
   community.general.flatpak_remote:
@@ -326,9 +325,10 @@
   community.general.flatpak:
     name:
       - cc.arduino.IDE2
+      - com.bambulab.BambuStudio
       - com.discordapp.Discord
       - com.github.tchx84.Flatseal
       - com.prusa3d.PrusaSlicer
+      - org.musicbrainz.Picard
       - org.videolan.VLC
       - us.zoom.Zoom
-      - org.musicbrainz.Picard
