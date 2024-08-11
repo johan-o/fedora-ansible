@@ -64,12 +64,17 @@
     - name: Configure vscode for user
       ansible.builtin.import_tasks: tasks/vscode-user.yml
       when: vscode and (code_installed.rc == 0)
+    
+    - name: Get current desktop
+      ansible.builtin.set_fact:
+        desktop: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }}"
 
     - name: Configure Gnome
-      ansible.builtin.import_tasks: tasks/gnome.yml
-
-    - name: Configure Gnome Terminal
-      ansible.builtin.import_tasks: tasks/gnome-terminal.yml
+      when: desktop == "GNOME"
+      ansible.builtin.include_tasks: "{{ item }}"
+      with_items:
+        - tasks/gnome.yml
+        - tasks/gnome-terminal.yml
     
     - name: Configure zsh
       ansible.builtin.import_tasks: tasks/zsh.yml
