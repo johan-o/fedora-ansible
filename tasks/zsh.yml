@@ -45,7 +45,8 @@
     dest: "{{ lookup('env', 'HOME') }}/"
     recursive: true
 
-- name: Change default shell
+- name: Change shell
+  become: true
   ansible.builtin.user:
     name: "{{ lookup('env', 'USER') }}"
     shell: /bin/zsh
