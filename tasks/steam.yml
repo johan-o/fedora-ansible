@@ -2,6 +2,7 @@
   ansible.builtin.dnf:
     name: steam
     update_cache: true
+
 - name: Install gayming packages
   ansible.builtin.dnf:
     name: 
