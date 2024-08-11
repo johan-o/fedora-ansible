@@ -1,96 +1,82 @@
 - name: "Gnome: Configure keyboard layouts"
-  become: false
   community.general.dconf:
     key: "/org/gnome/desktop/input-sources/sources"
     value: "[('xkb', 'us'), ('xkb', 'se')]"
     state: present
   
 - name: "Gnome: Disable caps lock"
-  become: false
   community.general.dconf:
     key: "/org/gnome/desktop/input-sources/xkb-options"
     value: "['caps:none']"
     state: present
   
 - name: "Gnome: Weekday in clock"
-  become: false
   community.general.dconf:
     key: "/org/gnome/desktop/interface/clock-show-weekday"
     value: true
     state: present
 
 - name: "Gnome: Seconds in clock"
-  become: false
   community.general.dconf:
     key: "/org/gnome/desktop/interface/clock-show-seconds"
     value: true
     state: present
 
 - name: "Gnome: Date in clock"
-  become: false
   community.general.dconf:
     key: "/org/gnome/desktop/interface/clock-show-date"
     value: true
     state: present
 
 - name: "Gnome: Dark Color Scheme"
-  become: false
   community.general.dconf:
     key: "/org/gnome/desktop/interface/color-scheme"
     value: "'prefer-dark'"
     state: present
 
 - name: "Gnome: 24-hour clock"
-  become: false
   community.general.dconf:
     key: "/org/gnome/desktop/interface/clock-format"
     value: "'24h'"
     state: present
 
 - name: "Gnome: disable hot corner"
-  become: false
   community.general.dconf:
     key: "/org/gnome/desktop/interface/enable-hot-corners"
     value: false
     state: present
 
 - name: "Gnome: Workspaces across all monitors"
-  become: false
   community.general.dconf:
     key: "/org/gnome/mutter/workspaces-only-on-primary"
     value: false
     state: present
 
 - name: "Gnome: app switcher only on current workspace"
-  become: false
   community.general.dconf:
     key: "/org/gnome/shell/app-switcher/current-workspace-only"
     value: true
     state: present
 
 - name: "Gnome: disable inactive sleep on AC"
-  become: false
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-type"
     value: "'nothing'"
     state: present
 
 - name: "Gnome: Pin apps"
-  become: false
   community.general.dconf:
     key: "/org/gnome/shell/favorite-apps"
     value: "['org.gnome.Nautilus.desktop', 'firefox.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', 'org.remmina.Remmina.desktop', 'virt-manager.desktop']"
     state: present
 
 - name: "Gnome: Enable location services"
-  become: false
   community.general.dconf:
     key: "/org/gnome/system/location/enabled"
     value: true
     state: present
 
 - name: "Gnome: Enable battery percentage"
-  become: false
   community.general.dconf:
     key: "/org/gnome/desktop/interface/show-battery-percentage"
     value: true
@@ -98,13 +84,12 @@
 
 # Weather
 - name: "Gnome Weather: centigrade unit"
-  become: false
   community.general.dconf:
     key: "/org/gnome/GWeather4/temperature-unit"
     value: "'centigrade'"
     state: present
+
 - name: "Gnome Weather: San Francisco, SEA airport location"
-  become: false
   community.general.dconf:
     key: "/org/gnome/Weather/locations"
     value: "[<(uint32 2, <('San Francisco', 'KOAK', true, [(0.65832848982162007, -2.133408063190589)], [(0.659296885757089, -2.1366218601153339)])>)>, <(uint32 2, <('Seattle-Tacoma International Airport', 'KSEA', false, [(0.82806661159338912, -2.134775231953554)], @a(dd) [])>)>]"
@@ -112,21 +97,18 @@
 
 # Files
 - name: "Gnome Files: Default zoom"
-  become: false
   community.general.dconf:
     key: "/org/gnome/nautilus/icon-view/default-zoom-level"
     value: "'small'"
     state: present
 
 - name: "Gnome Files: Use Tree View"
-  become: false
   community.general.dconf:
     key: "/org/gnome/nautilus/list-view/use-tree-view"
     value: true
     state: present
 
 - name: "Gnome Files: Default Folder Viewer"
-  become: false
   community.general.dconf:
     key: "/org/gnome/nautilus/default-folder-viewer"
     value: "'list-view'"
@@ -138,8 +120,15 @@
     name: America/Los_Angeles
 
 # Extensions
+- name: "Check gnome enabled extensions"
+  community.general.dconf:
+    key: "/org/gnome/shell/enabled-extensions"
+    state: read
+  register: extensions
+  
 - name: "Gnome: Enable caffeine extension"
-  become: false
+  when: >
+    'caffeine@patapon.info' not in extensions
   community.general.dconf:
     key: "/org/gnome/shell/enabled-extensions"
     value: "['background-logo@fedorahosted.org', 'caffeine@patapon.info']"
