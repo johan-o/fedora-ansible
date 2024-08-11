@@ -9,40 +9,55 @@
         - config.yml 
 
     - name: Update DNF cache
+      when: ansible_os_family == 'RedHat'
       ansible.builtin.dnf:
         update_cache: true
   
   tasks:
-    - name: Set up DNF
-      ansible.builtin.import_tasks: tasks/dnf.yml
+    - name: Fedora setup
+      when: >
+        (ansible_distribution == 'Fedora')
+      block:
+        - name: Set up DNF
+          ansible.builtin.import_tasks: tasks/dnf.yml
 
-    - name: Set up i2c
+        - name: Install VS Code
+          ansible.builtin.import_tasks: tasks/vscode.yml
+          when: vscode
+
+        - name: Install Tailscale
+          ansible.builtin.import_tasks: tasks/tailscale.yml
+          when: tailscale
+
+        - name: Install Steam
+          ansible.builtin.import_tasks: tasks/steam.yml
+          when: gaymer
+
+        - name: Install libvirt, add user to libvirt group
+          ansible.builtin.import_tasks: tasks/virtualization.yml
+          when: virtualization
+        
+        - name: Install Packages
+          ansible.builtin.import_tasks: tasks/packages.yml
+    
+    - name: Set up i2c group, add user to i2c
       ansible.builtin.import_tasks: tasks/i2c.yml
 
-    - name: Install VS Code
-      ansible.builtin.import_tasks: tasks/vscode.yml
-      when: vscode
+- name: OS independent configuration
+  hosts: localhost
+  become: false
 
-    - name: Install VS Code
-      become: false
+  pre_tasks:
+    - name: Load configuration variables
+      ansible.builtin.include_vars: "{{ item }}"
+      loop:
+        - config.yml 
+
+  tasks:  
+    - name: Configure vscode for user
       ansible.builtin.import_tasks: tasks/vscode-user.yml
       when: vscode
 
-    - name: Install Tailscale
-      ansible.builtin.import_tasks: tasks/tailscale.yml
-      when: tailscale
-
-    - name: Install Steam
-      ansible.builtin.import_tasks: tasks/steam.yml
-      when: gaymer
-
-    - name: Install libvirt, add user to libvirt group
-      ansible.builtin.import_tasks: tasks/virtualization.yml
-      when: virtualization
-    
-    - name: Install Packages
-      ansible.builtin.import_tasks: tasks/packages.yml
-    
     - name: Configure Gnome
       ansible.builtin.import_tasks: tasks/gnome.yml
 
