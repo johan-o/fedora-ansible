@@ -1,10 +1,8 @@
-- name: Configure DNF enabling parallel downloads
-  ansible.builtin.template:
-    src: "dnf.conf"
+- name: Configure DNF max_parallel_downloads
+  ansible.builtin.lineinfile:
     dest: "/etc/dnf/dnf.conf"
-    owner: root
-    group: root
-    mode: '0644'
+    regexp: "^max_parallel_downloads"
+    line: "max_parallel_downloads=10"
     
 - name: Remove unnecessary preinstalled DNF packages
   ansible.builtin.dnf:
@@ -56,24 +54,19 @@
     name: distribution-gpg-keys
     update_cache: true
 
-- name: Importing RPM Fusion free key
+- name: Import RPM Fusion keys
   ansible.builtin.rpm_key:
     state: present
-    key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+    key: "{{ item }}"
+  with_items:
+    - "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020"
+    - "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
 
-- name: Importing RPM Fusion nonfree key
-  ansible.builtin.rpm_key:
-    state: present
-    key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
-
-- name: Enable the RPM Fusion free repository
+- name: Enable the RPM Fusion repositories
   dnf:
-    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_major_version}}.noarch.rpm"
-    state: present
-
-- name: Enable the RPM Fusion nonfree repository
-  dnf:
-    name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ansible_distribution_major_version}}.noarch.rpm"
+    name: 
+      - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_major_version}}.noarch.rpm"
+      - "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ansible_distribution_major_version}}.noarch.rpm"
     state: present
 
 - name: Update all DNF packages
