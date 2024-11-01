@@ -133,3 +133,30 @@
     key: "/org/gnome/shell/enabled-extensions"
     value: "['background-logo@fedorahosted.org', 'caffeine@patapon.info']"
     state: present
+
+# ptyxis
+- name: disable audible bell
+  community.general.dconf:
+    key: '/org/gnome/Ptyxis/audible-bell'
+    value: 'false'
+    state: present
+
+- name: disable primary-menu shortcut
+  community.general.dconf:
+    key: '/org/gnome/Ptyxis/Shortcuts/primary-menu'
+    value: "''"
+    state: present
+
+- name: Set default profile, palette, and bold-is-bright
+  block:
+    - name: Set bold-is-bright true
+      community.general.dconf:
+        key: '/org/gnome/Ptyxis/Profiles/b7225441acb53b598718ae6d6724509e/bold-is-bright'
+        value: 'true'
+        state: present
+
+    - name: Set palette
+      community.general.dconf:
+        key: '/org/gnome/Ptyxis/Profiles/b7225441acb53b598718ae6d6724509e/palette'
+        value: "'xterm'"
+        state: present
