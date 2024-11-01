@@ -24,30 +24,11 @@
       - gnome-tour
       - gnome-text-editor
 
-- name: Remove LibreOffice packages
+- name: Remove LibreOffice dnf group
   ansible.builtin.dnf:
     state: removed
     name:
-      - libreoffice-calc
-      - libreoffice-core
-      - libreoffice-data
-      - libreoffice-emailmerge
-      - libreoffice-filters
-      - libreoffice-graphicfilter
-      - libreoffice-gtk3
-      - libreoffice-gtk4
-      - libreoffice-help-en
-      - libreoffice-impress
-      - libreoffice-langpack-en
-      - libreoffice-ogltrans
-      - libreoffice-opensymbol-fonts
-      - libreoffice-pdfimport
-      - libreoffice-pyuno
-      - libreoffice-ure
-      - libreoffice-ure-common
-      - libreoffice-writer
-      - libreoffice-x11
-      - libreoffice-xsltfilter
+      - '@libreoffice'
 
 - name: Install distribution-gpg-keys
   ansible.builtin.dnf:

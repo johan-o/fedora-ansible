@@ -1,5 +1,5 @@
 - name: Add Tailscale repo (Fedora)
-  ansible.builtin.shell: "sudo dnf config-manager --add-repo https://pkgs.tailscale.com/stable/fedora/tailscale.repo"
+  ansible.builtin.shell: "sudo dnf config-manager addrepo --from-repofile='https://pkgs.tailscale.com/stable/fedora/tailscale.repo'"
 
 - name: Install Tailscale 
   ansible.builtin.dnf:
