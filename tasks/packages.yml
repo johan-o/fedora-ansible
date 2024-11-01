@@ -1,9 +1,6 @@
 - name: Install development packages
   ansible.builtin.dnf:
     name:
-      - '@c-development'
-      - '@development-tools'
-      - 'electronic-lab'
       - ansible
       - avrdude
       - avr-binutils

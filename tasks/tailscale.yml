@@ -1,5 +1,13 @@
+- name: Check if tailscale repository installed
+  ansible.builtin.command: 'dnf repolist'
+  check_mode: false
+  changed_when: false
+  failed_when: repolist.rc > 1
+  register: repolist
+
 - name: Add Tailscale repo (Fedora)
   ansible.builtin.shell: "sudo dnf config-manager addrepo --from-repofile='https://pkgs.tailscale.com/stable/fedora/tailscale.repo'"
+  when: "'tailscale-stable' not in repolist.stdout"
 
 - name: Install Tailscale 
   ansible.builtin.dnf:
