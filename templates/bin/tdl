@@ -1,12 +1,10 @@
 #!/bin/bash
 
-if [ $# -lt 1 ]; then
-	offset="+0day"
-else 
+# set offset based on number of arguments
+offset="+0day"
+if [ $# -ge 1 ]; then
 	offset="$1day"
 fi
-
-alias odate="date --date $offset"
 
 # path to directory of lists
 if ! [ -d "$tdir" ]; then
@@ -14,29 +12,31 @@ if ! [ -d "$tdir" ]; then
 fi
 
 # make directories recursively
-tpath="$tdir/$(date --date $offset +%Y)/$(date --date $offset +%m)"
+tpath="$tdir/lists/$(date --date $offset +%Y)/$(date --date $offset +%m)"
 mkdir -p $tpath
 
 # if not in a tmux pane, either attaches or creates session with name tdl
 if [ -z ${TMUX+x} ]; then
-	tmux new -A -s tdl -c $tpath
+	tmux new -A -s tdl -c $tdir
 else 
 	# getting path + name of list
-	filename="$tpath/$(date --date $offset +%F).md"
+	filename="${tpath}/$(date --date $offset +%F).md"
 	# update git repo
-	cd $tpath && git pull
+	cd "${tpath}" && git pull
+	git add "${tdir}"
+	git restore --staged "${tdir}/lists"
 	
 	# checking if file exists
-	if ! [ -f "$filename" ]; then
-		touch $filename
-		echo "# To Do List $(date --date $offset +'%A %F')" > $filename
-		cat $tdir/header.md >> $filename
+	if ! [ -f "${filename}" ]; then
+		touch ${filename}
+		echo "# To Do List $(date --date $offset +'%A %F')" > "${filename}"
+		cat "${tdir}/header.md" >> "${filename}"
 	fi
+
+	vim "${filename}"
 	
-	# add switch to configure whether git commit & push is done
-	vim $filename
-	
-	git add $filename
+	# janky git adding tdl file, all non-list files
+	git add "${filename}"
 	git commit -m "updated $(date --date $offset +%F).md"
 	git push
 fi
