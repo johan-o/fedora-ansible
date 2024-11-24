@@ -23,6 +23,7 @@
 - name: Get currently installed vscode extensions
   ansible.builtin.command: 'code --list-extensions'
   register: codeExtensions
+  changed_when: false
 
 - name: Install VS Code vim
   ansible.builtin.command: "code --install-extension {{ item }}"

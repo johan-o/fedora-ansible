@@ -71,10 +71,7 @@
 
     - name: Configure Gnome
       when: desktop == "GNOME"
-      ansible.builtin.include_tasks: "{{ item }}"
-      with_items:
-        - tasks/gnome.yml
-        - tasks/gnome-terminal.yml
+      ansible.builtin.include_tasks: tasks/gnome.yml
     
     - name: Configure zsh
       ansible.builtin.import_tasks: tasks/zsh.yml
