@@ -23,8 +23,6 @@ else
 	filename="${tpath}/$(date --date $offset +%F).md"
 	# update git repo
 	cd "${tpath}" && git pull
-	git add "${tdir}"
-	git restore --staged "${tdir}/lists"
 	
 	# checking if file exists
 	if ! [ -f "${filename}" ]; then
@@ -36,6 +34,8 @@ else
 	vim "${filename}"
 	
 	# janky git adding tdl file, all non-list files
+	git add "${tdir}"
+	git restore --staged "${tdir}/lists"
 	git add "${filename}"
 	git commit -m "updated $(date --date $offset +%F).md"
 	git push
