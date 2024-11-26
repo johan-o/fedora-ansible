@@ -1,4 +1,7 @@
 #!/bin/bash
+set -x
+
+SESSION_NAME="tdl"
 
 # set offset based on number of arguments
 offset="+0day"
@@ -17,7 +20,26 @@ mkdir -p $tpath
 
 # if not in a tmux pane, either attaches or creates session with name tdl
 if [ -z ${TMUX+x} ]; then
-	tmux new -A -s tdl -c $tdir
+	# check whether SESSION_NAME tmux exists
+	tmux has-session -t "${SESSION_NAME}" 2>/dev/null
+	if [ $? -ne 0 ] ; then
+		tmux new-session -s "${SESSION_NAME}" -n "latex" -c "${tdir}" -d
+		
+		tmux send-keys -t "${SESSION_NAME}:latex" "cd latex" C-m
+		tmux send-keys -t "${SESSION_NAME}:latex" "open ." C-m
+		tmux send-keys -t "${SESSION_NAME}:latex" "entr-latex todo" C-m
+		tmux split-window -t "${SESSION_NAME}:latex" -v -c "${tdir}/latex" -l "90%"
+		
+		tmux new-window -t "${SESSION_NAME}" -n "packlist" -c "${tdir}/packlist"
+		tmux send-keys -t "${SESSION_NAME}:packlist" "open ." C-m
+		tmux send-keys -t "${SESSION_NAME}:packlist" "entr-latex packlist" C-m
+		tmux split-window -t "${SESSION_NAME}:packlist" -v -c "${tdir}/packlist" -l "90%"
+
+		tmux new-window -t "${SESSION_NAME}" -n "lists" -c "${tdir}/lists"
+		tmux send-keys -t "${SESSION_NAME}:lists" "tdl" C-m
+	fi
+
+	tmux a -t "${SESSION_NAME}"
 else 
 	# getting path + name of list
 	filename="${tpath}/$(date --date $offset +%F).md"
