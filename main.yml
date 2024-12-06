@@ -76,6 +76,10 @@
       when: desktop == "GNOME"
       ansible.builtin.include_tasks: tasks/gnome.yml
     
+    - name: Configure ptyxis
+      when: desktop == "GNOME"
+      ansible.builtin.include_tasks: tasks/ptyxis.yml
+    
     - name: Configure zsh
       ansible.builtin.import_tasks: tasks/zsh.yml
       when: zsh

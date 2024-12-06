@@ -22,7 +22,6 @@
       - ddcutil
       - dnf5
       - entr
-      - geary
       - gnome-extensions-app
       - gnome-shell-extension-caffeine
       - gnome-tweaks

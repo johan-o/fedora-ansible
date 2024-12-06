@@ -1,0 +1,26 @@
+- name: disable primary-menu shortcut
+  community.general.dconf:
+    key: '/org/gnome/Ptyxis/Shortcuts/primary-menu'
+    value: "''"
+    state: present
+
+- name: get default UUID from /org/gnome/Ptyxis/default-profile-uuid
+  community.general.dconf: 
+    key: "/org/gnome/Ptyxis/default-profile-uuid"
+    state: read
+  register: ptyxis_default_uuid
+
+- name: Set default profile, palette, and bold-is-bright
+  block:
+    - name: Set bold-is-bright true
+      community.general.dconf:
+        key: '/org/gnome/Ptyxis/Profiles/{{ ptyxis_default_uuid.value[1:-1] }}/bold-is-bright'
+        value: 'true'
+        state: present
+
+    - name: Set palette
+      community.general.dconf:
+        key: '/org/gnome/Ptyxis/Profiles/{{ ptyxis_default_uuid.value[1:-1] }}/palette'
+        value: "'xterm'"
+        state: present
+
