@@ -324,6 +324,7 @@
 - name: Install Flatpak applications
   become: false
   community.general.flatpak:
+    state: latest
     name:
       - cc.arduino.IDE2
       - com.bambulab.BambuStudio
