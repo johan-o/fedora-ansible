@@ -29,6 +29,7 @@
       - htop
       - libheif
       - lm_sensors
+      - ocrmypdf
       - prename
       - python3-pytest-xdist+psutil
       - remmina
