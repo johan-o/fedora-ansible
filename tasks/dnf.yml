@@ -24,12 +24,6 @@
       - gnome-tour
       - gnome-text-editor
 
-- name: Remove LibreOffice dnf group
-  ansible.builtin.dnf:
-    state: removed
-    name:
-      - '@libreoffice'
-
 - name: Install distribution-gpg-keys
   ansible.builtin.dnf:
     name: distribution-gpg-keys

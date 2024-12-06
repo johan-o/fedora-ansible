@@ -1,15 +1,10 @@
 # Configuration variables
-vscode: true
-
 docker: true
-
 gaymer: false
-
+hide_libreoffice: true
 kicad: true
 latex: true
-
-zsh: true
-
 tailscale: true
-
 virtualization: true
+vscode: true
+zsh: true

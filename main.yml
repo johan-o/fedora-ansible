@@ -69,6 +69,9 @@
       ansible.builtin.set_fact:
         desktop: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }}"
 
+    - name: Configure LibreOffice
+      ansible.builtin.import_tasks: tasks/libreoffice.yml
+          
     - name: Configure Gnome
       when: desktop == "GNOME"
       ansible.builtin.include_tasks: tasks/gnome.yml

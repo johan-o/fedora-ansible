@@ -13,9 +13,9 @@ to run the ansible playbook--note this will ask for BECOME password--this is the
 again based on timeout), then again immediately after partially breaking appearance of the terminal.
 
 ## What does this do?
-* Updates DNF cache
+* Updates DNF cache, and updates computer
 * Enables parallel downloads for DNF
-* Removes LibreOffice and other pre-installed apps I don't use
+* Hides LibreOffice and removes other pre-installed apps I don't use
 * Enables RPMFusion repositories
 
 * Installs Visual Studio Code 

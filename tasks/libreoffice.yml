@@ -1,0 +1,27 @@
+- name: Copy NoDisplay .desktop files (desktop entries)
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ lookup('env', 'HOME') }}/.local/share/applications/"
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    mode: '0644'
+  with_items:
+    - "templates/libreoffice/libreoffice-calc.desktop"
+    - "templates/libreoffice/libreoffice-impress.desktop"
+    - "templates/libreoffice/libreoffice-startcenter.desktop"
+    - "templates/libreoffice/libreoffice-writer.desktop"
+    - "templates/libreoffice/libreoffice-xsltfilter.desktop"
+  when: (hide_libreoffice is defined) and hide_libreoffice
+
+- name: Delete NoDisplay .desktop files (desktop entries)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ lookup('env', 'HOME') }}/.local/share/applications/libreoffice-calc.desktop"
+    - "{{ lookup('env', 'HOME') }}/.local/share/applications/libreoffice-impress.desktop"
+    - "{{ lookup('env', 'HOME') }}/.local/share/applications/libreoffice-startcenter.desktop"
+    - "{{ lookup('env', 'HOME') }}/.local/share/applications/libreoffice-writer.desktop"
+    - "{{ lookup('env', 'HOME') }}/.local/share/applications/libreoffice-xsltfilter.desktop"
+  when: (hide_libreoffice is not defined) or (not hide_libreoffice)
+
