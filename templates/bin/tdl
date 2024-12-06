@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 SESSION_NAME="tdl"
 
@@ -17,6 +18,9 @@ fi
 tpath="$tdir/lists/$(date --date $offset +%Y)/$(date --date $offset +%m)"
 mkdir -p $tpath
 
+# update git repo
+cd "${tpath}" && git pull
+
 # if not in a tmux pane, either attaches or creates session with name tdl
 if [ -z ${TMUX+x} ]; then
 	# check whether SESSION_NAME tmux exists
@@ -27,23 +31,18 @@ if [ -z ${TMUX+x} ]; then
 		tmux send-keys -t "${SESSION_NAME}:latex" "cd latex" C-m
 		tmux send-keys -t "${SESSION_NAME}:latex" "open ." C-m
 		tmux send-keys -t "${SESSION_NAME}:latex" "entr-latex todo" C-m
-		tmux split-window -t "${SESSION_NAME}:latex" -v -c "${tdir}/latex" -l "90%"
-		
-		tmux new-window -t "${SESSION_NAME}" -n "packlist" -c "${tdir}/packlist"
-		tmux send-keys -t "${SESSION_NAME}:packlist" "open ." C-m
-		tmux send-keys -t "${SESSION_NAME}:packlist" "entr-latex packlist" C-m
-		tmux split-window -t "${SESSION_NAME}:packlist" -v -c "${tdir}/packlist" -l "90%"
 
-		tmux new-window -t "${SESSION_NAME}" -n "lists" -c "${tdir}/lists"
-		tmux send-keys -t "${SESSION_NAME}:lists" "tdl" C-m
+		tmux split-window -t "${SESSION_NAME}:latex" -v -c "${tdir}/latex" -l "90%"
+		tmux select-pane -U
+
+		tmux split-window -t "${SESSION_NAME}:latex" -h -c "${tdir}/latex"
+		tmux send-keys -t "${SESSION_NAME}:latex" "tdl" C-m
 	fi
 
 	tmux a -t "${SESSION_NAME}"
 else 
 	# getting path + name of list
 	filename="${tpath}/$(date --date $offset +%F).md"
-	# update git repo
-	cd "${tpath}" && git pull
 	
 	# checking if file exists
 	if ! [ -f "${filename}" ]; then
