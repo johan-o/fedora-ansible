@@ -1,6 +1,4 @@
 #!/bin/bash
-set -x
-
 SESSION_NAME="tdl"
 
 # set offset based on number of arguments
