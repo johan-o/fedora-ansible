@@ -1,0 +1,5 @@
+for id in $(cat /etc/modprobe.d/vfio.conf | sed 's/.*ids=\(.*\)/\1/' | tr ',' '\n'); 
+	do echo "${id}"; 
+	lspci -nnk -d "${id}"; 
+	echo; 
+done

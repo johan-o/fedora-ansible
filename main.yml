@@ -36,6 +36,9 @@
         - name: Install libvirt, add user to libvirt group
           ansible.builtin.import_tasks: tasks/virtualization.yml
           when: virtualization
+
+        - name: Configure VFIO
+          ansible.builtin.import_tasks: tasks/vfio.yml
         
         - name: Install Packages
           ansible.builtin.import_tasks: tasks/packages.yml

@@ -1,0 +1,66 @@
+- name: IOMMU / VFIO 
+  when: (vfio_ids is defined)
+  block:
+    - name: intel_iommu, amd_iommu, iommu kernel arguments
+      block: 
+        - name: Add amd_iommu for x86-64 AMD CPUs
+          ansible.builtin.shell: "sudo grubby --update-kernel=ALL --args='amd_iommu=on'"
+          when: 
+            ('AuthenticAMD' in ansible_processor) and 
+            ('amd_iommu' not in ansible_cmdline)
+
+        - name: Add intel_iommu for x86-64 Intel CPUs
+          ansible.builtin.shell: "sudo grubby --update-kernel=ALL --args='intel_iommu=on'"
+          when: 
+            ('GenuineIntel' in ansible_processor) and 
+            ('intel_iommu' not in ansible_cmdline)
+
+        - name: Add iommu=pt for x86-64 CPUs
+          ansible.builtin.shell: "sudo grubby --update-kernel=ALL --args='iommu=pt'"
+          when: 
+            ("iommu" not in ansible_cmdline)
+      when: 
+        ('x86_64' in ansible_userspace_architecture) and
+        ansible_os_family == 'RedHat'
+
+    - name: Copy modules-load.d/vfio.conf file
+      ansible.builtin.copy:
+        src: "vfio/vfio-modules.conf"
+        dest: "/etc/modules-load.d/vfio.conf"
+        owner: root
+        group: root
+        mode: '0644'
+      register: vfio_conf
+
+    - name: Blacklist NVIDIA Nouveau driver
+      ansible.builtin.copy:
+        src: "vfio/blacklist.conf"
+        dest: "/etc/modprobe.d/blacklist.conf"
+        owner: root
+        group: root
+        mode: '0644'
+      register: vfio_conf
+
+    - name: Template modprobe.d/vfio.conf file
+      ansible.builtin.template:
+        src: "vfio/vfio-ids.conf"
+        dest: "/etc/modprobe.d/vfio.conf"
+        owner: root
+        group: root
+        mode: '0644'
+      register: vfio_conf
+
+- name: Remove VFIO pci-ids, unblacklist nouveau
+  when: (vfio_ids is not defined)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  with_items: 
+    - "/etc/modules-load.d/vfio.conf"
+    - "/etc/modprobe.d/blacklist.conf"
+    - "/etc/modprobe.d/vfio.conf"
+  register: vfio_conf
+
+- name: update dracut
+  ansible.builtin.shell: sudo dracut --regenerate-all --force
+  when: vfio_conf.changed

@@ -5,6 +5,9 @@ hide_libreoffice: true
 kicad: true
 latex: true
 tailscale: true
+vfio_ids:
+  - 10de:0fb9
+  - 10de:1cb3
 virtualization: true
 vscode: true
 zsh: true
