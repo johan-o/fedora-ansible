@@ -6,11 +6,11 @@
     group: "{{ lookup('env', 'USER') }}"
     mode: '0644'
   with_items:
-    - "templates/libreoffice/libreoffice-calc.desktop"
-    - "templates/libreoffice/libreoffice-impress.desktop"
-    - "templates/libreoffice/libreoffice-startcenter.desktop"
-    - "templates/libreoffice/libreoffice-writer.desktop"
-    - "templates/libreoffice/libreoffice-xsltfilter.desktop"
+    - "files/libreoffice/libreoffice-calc.desktop"
+    - "files/libreoffice/libreoffice-impress.desktop"
+    - "files/libreoffice/libreoffice-startcenter.desktop"
+    - "files/libreoffice/libreoffice-writer.desktop"
+    - "files/libreoffice/libreoffice-xsltfilter.desktop"
   when: (hide_libreoffice is defined) and hide_libreoffice
 
 - name: Delete NoDisplay .desktop files (desktop entries)

@@ -4,7 +4,7 @@
     key: https://packages.microsoft.com/keys/microsoft.asc
 
 - name: Configure VS Code repo file
-  ansible.builtin.template:
+  ansible.builtin.copy:
     src: vscode.repo
     dest: "/etc/yum.repos.d/vscode.repo"
     owner: root

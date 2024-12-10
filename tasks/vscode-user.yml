@@ -5,7 +5,7 @@
     state: directory
 
 - name: Configure VS Code appearance (settings.json)
-  ansible.builtin.template:
+  ansible.builtin.copy:
     src: settings.json
     dest: "{{ lookup('env', 'HOME') }}/.config/Code/User/settings.json"
     owner: "{{ lookup('env', 'USER') }}"
@@ -13,7 +13,7 @@
     mode: '0644'
 
 - name: Configure VS Code keyboard shortcut
-  ansible.builtin.template:
+  ansible.builtin.copy:
     src: keybindings.json
     dest: "{{ lookup('env', 'HOME') }}/.config/Code/User/keybindings.json"
     owner: "{{ lookup('env', 'USER') }}"

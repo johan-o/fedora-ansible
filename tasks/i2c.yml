@@ -11,7 +11,7 @@
 
 - name: Copy udev rule
   ansible.builtin.copy:
-    src: templates/10-local_i2c_group.rules
+    src: 10-local_i2c_group.rules
     dest: /etc/udev/rules.d/10-local_i2c_group.rules
     owner: root
     group: root

@@ -18,21 +18,21 @@
 
 # Conf files
 - name: Copy .zshrc
-  ansible.builtin.template:
+  ansible.builtin.copy:
     src: "zshrc"
     dest: "{{ lookup('env', 'HOME') }}/.zshrc"
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"
     mode: '0755'
 - name: Copy .vimrc
-  ansible.builtin.template:
+  ansible.builtin.copy:
     src: "vimrc"
     dest: "{{ lookup('env', 'HOME') }}/.vimrc"
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"
     mode: '0755'
 - name: Copy .tmux.conf
-  ansible.builtin.template:
+  ansible.builtin.copy:
     src: "tmux.conf"
     dest: "{{ lookup('env', 'HOME') }}/.tmux.conf"
     owner: "{{ lookup('env', 'USER') }}"
@@ -41,7 +41,7 @@
 
 - name: Copy bin directory
   ansible.posix.synchronize:
-    src: "./templates/bin"
+    src: "./files/bin"
     dest: "{{ lookup('env', 'HOME') }}/"
     recursive: true
 
