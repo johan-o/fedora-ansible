@@ -24,3 +24,8 @@
         value: "'xterm'"
         state: present
 
+    - name: Disable preserve-directory
+      community.general.dconf:
+        key: '/org/gnome/Ptyxis/Profiles/{{ ptyxis_default_uuid.value[1:-1] }}/preserve-directory'
+        value: "'never'"
+        state: present
