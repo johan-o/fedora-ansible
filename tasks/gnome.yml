@@ -114,6 +114,12 @@
     value: "'list-view'"
     state: present
 
+- name: "Gnome Files: sort folders first"
+  community.general.dconf:
+    key: "/org/gtk/gtk4/settings/file-chooser/sort-directories-first"
+    value: true
+    state: present
+
 # Timezone
 - name: "Set timezone to America/Los_Angeles"
   community.general.timezone:
