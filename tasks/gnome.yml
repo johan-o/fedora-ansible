@@ -131,11 +131,4 @@
     key: "/org/gnome/shell/enabled-extensions"
     state: read
   register: extensions
-  
-- name: "Gnome: Enable caffeine extension"
-  when: >
-    'caffeine@patapon.info' not in extensions.value
-  community.general.dconf:
-    key: "/org/gnome/shell/enabled-extensions"
-    value: "['background-logo@fedorahosted.org', 'caffeine@patapon.info']"
-    state: present
+
