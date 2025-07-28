@@ -6,8 +6,11 @@ kicad: true
 latex: true
 tailscale: true
 vfio_ids:
-  - 10de:0fb9
-  - 10de:1cb3
+  - 10de:10f8
+  - 10de:1ad8
+  - 10de:1ad9
+  - 10de:1eb1
+  - 1b73:1100
 virtualization: true
 vscode: true
 zsh: true
