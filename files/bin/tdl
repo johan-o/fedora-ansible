@@ -8,12 +8,12 @@ if [ $# -ge 1 ]; then
 fi
 
 # path to directory of lists
-if ! [ -d "$tdir" ]; then
+if ! [ -d "${tdir}" ]; then
 	tdir="$HOME/Documents/todo-lists"
 fi
 
 # make directories recursively
-tpath="$tdir/lists/$(date --date $offset +%Y)/$(date --date $offset +%m)"
+tpath="${tdir}/lists/$(date --date $offset +%Y)/$(date --date $offset +%m)"
 mkdir -p $tpath
 
 # update git repo
@@ -51,12 +51,14 @@ else
 
 	vim "${filename}.md"
 
-	cp "./typst/todo.pdf" "${filename}.pdf"
+	if [[ $# -eq "0" ]] ; then
+		cp "${tdir}/typst/todo.pdf" "${filename}.pdf"
+	fi
 	
 	# janky git adding tdl file, all non-list files
 	git add "${tdir}"
 	git restore --staged "${tdir}/lists"
 	git add "${filename}.*"
-	git commit -m "updated $(date --date $offset +%F).md"
+	git commit -m "updated $(date --date $offset +%F)"
 	git push
 fi
