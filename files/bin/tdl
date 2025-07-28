@@ -24,37 +24,39 @@ if [ -z ${TMUX+x} ]; then
 	# check whether SESSION_NAME tmux exists
 	tmux has-session -t "${SESSION_NAME}" 2>/dev/null
 	if [ $? -ne 0 ] ; then
-		tmux new-session -s "${SESSION_NAME}" -n "latex" -c "${tdir}" -d
+		tmux new-session -s "${SESSION_NAME}" -n "typst" -c "${tdir}" -d
 		
-		tmux send-keys -t "${SESSION_NAME}:latex" "cd latex" C-m
-		tmux send-keys -t "${SESSION_NAME}:latex" "open ." C-m
-		tmux send-keys -t "${SESSION_NAME}:latex" "entr-latex todo" C-m
+		tmux send-keys -t "${SESSION_NAME}:typst" "cd typst" C-m
+		tmux send-keys -t "${SESSION_NAME}:typst" "open ." C-m
+		tmux send-keys -t "${SESSION_NAME}:typst" "typst watch todo.typ" C-m
 
-		tmux split-window -t "${SESSION_NAME}:latex" -v -c "${tdir}/latex" -l "90%"
+		tmux split-window -t "${SESSION_NAME}:typst" -v -c "${tdir}/typst" -l "90%"
 		tmux select-pane -U
 
-		tmux split-window -t "${SESSION_NAME}:latex" -h -c "${tdir}/latex"
-		tmux send-keys -t "${SESSION_NAME}:latex" "tdl" C-m
+		tmux split-window -t "${SESSION_NAME}:typst" -h -c "${tdir}/typst"
+		tmux send-keys -t "${SESSION_NAME}:typst" "tdl" C-m
 	fi
 
 	tmux a -t "${SESSION_NAME}"
 else 
 	# getting path + name of list
-	filename="${tpath}/$(date --date $offset +%F).md"
+	filename="${tpath}/$(date --date $offset +%F)"
 	
 	# checking if file exists
-	if ! [ -f "${filename}" ]; then
-		touch ${filename}
-		echo "# To Do List $(date --date $offset +'%A %F')" > "${filename}"
-		cat "${tdir}/header.md" >> "${filename}"
+	if ! [ -f "${filename}.md" ]; then
+		touch "${filename}.md"
+		echo "# To Do List $(date --date $offset +'%A %F')" > "${filename}.md"
+		cat "${tdir}/header.md" >> "${filename}.md"
 	fi
 
-	vim "${filename}"
+	vim "${filename}.md"
+
+	cp "./typst/todo.pdf" "${filename}.pdf"
 	
 	# janky git adding tdl file, all non-list files
 	git add "${tdir}"
 	git restore --staged "${tdir}/lists"
-	git add "${filename}"
+	git add "${filename}.*"
 	git commit -m "updated $(date --date $offset +%F).md"
 	git push
 fi

@@ -114,6 +114,12 @@
     value: "'list-view'"
     state: present
 
+- name: "Gnome Files: sort folders first"
+  community.general.dconf:
+    key: "/org/gtk/gtk4/settings/file-chooser/sort-directories-first"
+    value: true
+    state: present
+
 # Timezone
 - name: "Set timezone to America/Los_Angeles"
   community.general.timezone:
@@ -125,11 +131,4 @@
     key: "/org/gnome/shell/enabled-extensions"
     state: read
   register: extensions
-  
-- name: "Gnome: Enable caffeine extension"
-  when: >
-    'caffeine@patapon.info' not in extensions
-  community.general.dconf:
-    key: "/org/gnome/shell/enabled-extensions"
-    value: "['background-logo@fedorahosted.org', 'caffeine@patapon.info']"
-    state: present
+
