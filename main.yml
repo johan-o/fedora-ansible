@@ -46,6 +46,10 @@
     - name: Set up i2c group, add user to i2c
       ansible.builtin.import_tasks: tasks/i2c.yml
 
+  handlers:
+    - name: Update dracut
+      ansible.builtin.shell: sudo dracut --regenerate-all --force
+
 - name: OS independent configuration
   hosts: localhost
   become: false

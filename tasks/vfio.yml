@@ -30,7 +30,7 @@
         owner: root
         group: root
         mode: '0644'
-      register: vfio_conf
+      notify: Update dracut
 
     - name: Blacklist NVIDIA Nouveau driver
       ansible.builtin.copy:
@@ -39,7 +39,7 @@
         owner: root
         group: root
         mode: '0644'
-      register: vfio_conf
+      notify: Update dracut
 
     - name: Template modprobe.d/vfio.conf file
       ansible.builtin.template:
@@ -48,7 +48,7 @@
         owner: root
         group: root
         mode: '0644'
-      register: vfio_conf
+      notify: Update dracut
 
 - name: Remove VFIO pci-ids, unblacklist nouveau
   when: (vfio_ids is not defined)
@@ -59,8 +59,4 @@
     - "/etc/modules-load.d/vfio.conf"
     - "/etc/modprobe.d/blacklist.conf"
     - "/etc/modprobe.d/vfio.conf"
-  register: vfio_conf
-
-- name: update dracut
-  ansible.builtin.shell: sudo dracut --regenerate-all --force
-  when: vfio_conf.changed
+  notify: Update dracut
