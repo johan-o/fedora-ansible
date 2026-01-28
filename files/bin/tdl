@@ -46,7 +46,7 @@ else
 	if ! [ -f "${filename}.md" ]; then
 		touch "${filename}.md"
 		echo "# To Do List $(date --date $offset +'%A %F')" > "${filename}.md"
-		cat "${tdir}/header.md" >> "${filename}.md"
+		cat "${tdir}/header.md" | sed 's/\/\/.*//' | cat -s >> "${filename}.md"
 	fi
 
 	vim "${filename}.md"
