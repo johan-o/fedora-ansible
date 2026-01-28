@@ -326,7 +326,6 @@
     state: latest
     name:
       - cc.arduino.IDE2
-      - com.bambulab.BambuStudio
       - com.discordapp.Discord
       - com.github.tchx84.Flatseal
       - com.prusa3d.PrusaSlicer
