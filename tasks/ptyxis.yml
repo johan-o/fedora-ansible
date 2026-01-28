@@ -10,7 +10,8 @@
     state: read
   register: ptyxis_default_uuid
 
-- name: Set default profile, palette, and bold-is-bright
+- name: Configure ptyxis
+  when: ptyxis_default_uuid.value != None
   block:
     - name: Set bold-is-bright true
       community.general.dconf:
