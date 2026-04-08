@@ -4,21 +4,23 @@
     path: "{{ lookup('env', 'HOME') }}/.config/Code/User"
     state: directory
 
-- name: Configure VS Code appearance (settings.json)
-  ansible.builtin.copy:
-    src: settings.json
-    dest: "{{ lookup('env', 'HOME') }}/.config/Code/User/settings.json"
-    owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
-    mode: '0644'
+# FIXME: macOS wrong location
+# - name: Configure VS Code appearance (settings.json)
+#   ansible.builtin.copy:
+#     src: settings.json
+#     dest: "{{ lookup('env', 'HOME') }}/.config/Code/User/settings.json"
+#     owner: "{{ lookup('env', 'USER') }}"
+#     group: "{{ lookup('env', 'USER') }}"
+#     mode: '0644'
 
-- name: Configure VS Code keyboard shortcut
-  ansible.builtin.copy:
-    src: keybindings.json
-    dest: "{{ lookup('env', 'HOME') }}/.config/Code/User/keybindings.json"
-    owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
-    mode: '0644'
+# FIXME: macOS wrong location
+# - name: Configure VS Code keyboard shortcut
+#   ansible.builtin.copy:
+#     src: keybindings.json
+#     dest: "{{ lookup('env', 'HOME') }}/.config/Code/User/keybindings.json"
+#     owner: "{{ lookup('env', 'USER') }}"
+#     group: "{{ lookup('env', 'USER') }}"
+#     mode: '0644'
 
 - name: Get currently installed vscode extensions
   ansible.builtin.command: 'code --list-extensions'

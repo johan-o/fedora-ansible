@@ -1,3 +1,4 @@
+#!/bin/bash
 rename "s/ /-/g" *
 rename "s/_/-/g" *
 rename "s/–/-/g" *

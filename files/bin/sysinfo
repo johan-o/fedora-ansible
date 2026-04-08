@@ -5,10 +5,34 @@ n=`tput sgr0`
 
 echo -e "${b}System information as of `date`${n}\n"
 echo -e "${b}Hostname:${n}\t`hostname` (`uname -srm`)"
-echo -e "${b}IP addresses:${n}\t`hostname -I`"
-echo -e "${b}CPU load:${n}\t`cat /proc/loadavg | cut -d" " -f1-3`"
-echo -e "${b}Uptime:${n}\t\t`cat /proc/uptime | awk '{printf "%d days %02d:%02d:%02d", $1 / 3600 / 24, $1 / 3600 % 24, $1 / 60 % 60, $1 % 60}'`"
-echo -e "${b}Memory Usage:${n}\t`free -m | grep Mem | awk {'print int(int($3)/int($2) * 100)'}`% of `free -m | grep Mem | awk {'print int($2)'}` MiB"
+echo -ne "${b}IP addresses:${n}\t"
+case "$OSTYPE" in
+  darwin*)  ipconfig getiflist | xargs -n1 ipconfig getifaddr ;; 
+  linux*)   hostname -I ;;
+  *)        echo "Skipping" ;;
+esac
+
+echo -ne "${b}CPU load:${n}\t"
+case "$OSTYPE" in
+  darwin*)  w | head -n1 | sed 's/.*averages: //' ;;
+  linux*)   cat /proc/loadavg | cut -d" " -f1-3 ;;
+  *)        echo "Skipping" ;;
+esac
+
+echo -ne "${b}Uptime:${n}\t\t"
+case "$OSTYPE" in
+  darwin*)  ts_boot=`sysctl -n kern.boottime | cut -d" " -f4 | cut -d"," -f1`; ts_now=`date +%s`; echo $(($ts_now-$ts_boot)) ;;
+  linux*)   cat /proc/uptime ;;
+  *)        echo "-1" ;;
+esac | awk '{printf "%d days %02d:%02d:%02d", $1 / 3600 / 24, $1 / 3600 % 24, $1 / 60 % 60, $1 % 60}'
+echo
+
+echo -ne "${b}Memory Usage:${n}\t"
+case "$OSTYPE" in
+  darwin*)  echo -e "`top -l 1 | grep -E "Mem:" | sed 's/PhysMem: //' | sed 's/ (.*//' ; echo -ne` of $(($(sysctl -n hw.memsize) / 1024 / 1024)) MiB"  ;;
+  linux*)   echo -e "`free -m | grep Mem | awk {'print int(int($3)/int($2) * 100)'}`% of `free -m | grep Mem | awk {'print int($2)'}` MiB" ;;
+  *)        echo "Skipping" ;;
+esac
 echo
 echo -e "${b}Active sessions:${n}\n`w | tail -n +2`"
 if [ -x "zfs list" ];

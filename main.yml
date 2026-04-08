@@ -44,6 +44,7 @@
           ansible.builtin.import_tasks: tasks/packages.yml
     
     - name: Set up i2c group, add user to i2c
+      when: ansible_system == 'Linux'
       ansible.builtin.import_tasks: tasks/i2c.yml
 
   handlers:
@@ -72,21 +73,24 @@
       ansible.builtin.import_tasks: tasks/vscode-user.yml
       when: vscode and (code_installed.rc == 0)
     
-    - name: Get current desktop
-      ansible.builtin.set_fact:
-        desktop: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }}"
+    - name: Configure Linux systems
+      when: ansible_system == 'Linux'
+      block:
+        - name: Get current desktop
+          ansible.builtin.set_fact:
+            desktop: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }}"
 
-    - name: Configure LibreOffice
-      ansible.builtin.import_tasks: tasks/libreoffice.yml
-          
-    - name: Configure Gnome
-      when: desktop == "GNOME"
-      ansible.builtin.include_tasks: tasks/gnome.yml
-    
-    - name: Configure ptyxis
-      when: desktop == "GNOME"
-      ansible.builtin.include_tasks: tasks/ptyxis.yml
-    
+        - name: Configure LibreOffice
+          ansible.builtin.import_tasks: tasks/libreoffice.yml
+              
+        - name: Configure Gnome
+          when: desktop == "GNOME"
+          ansible.builtin.include_tasks: tasks/gnome.yml
+        
+        - name: Configure ptyxis
+          when: desktop == "GNOME"
+          ansible.builtin.include_tasks: tasks/ptyxis.yml
+        
     - name: Configure zsh
       ansible.builtin.import_tasks: tasks/zsh.yml
       when: zsh
