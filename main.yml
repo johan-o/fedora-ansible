@@ -9,14 +9,14 @@
         - config.yml 
 
     - name: Update DNF cache
-      when: ansible_os_family == 'RedHat'
+      when: ansible_facts["os_family"] == 'RedHat'
       ansible.builtin.dnf:
         update_cache: true
   
   tasks:
     - name: Fedora setup
       when: >
-        (ansible_distribution == 'Fedora')
+        (ansible_facts["distribution"] == 'Fedora')
       block:
         - name: Set up DNF
           ansible.builtin.import_tasks: tasks/dnf.yml

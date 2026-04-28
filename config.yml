@@ -1,9 +1,8 @@
 # Configuration variables
-docker: true
 gaymer: false
 hide_libreoffice: true
 kicad: true
-latex: true
+latex: false
 tailscale: true
 vfio_ids:
   - 10de:10f8

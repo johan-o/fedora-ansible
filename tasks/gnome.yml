@@ -4,6 +4,12 @@
     value: "[('xkb', 'us'), ('xkb', 'se')]"
     state: present
   
+- name: "Gnome: Enable primary-paste"
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/gtk-enable-primary-paste"
+    value: true
+    state: present
+  
 - name: "Gnome: Disable caps lock"
   community.general.dconf:
     key: "/org/gnome/desktop/input-sources/xkb-options"
