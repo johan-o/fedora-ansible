@@ -63,7 +63,7 @@
   when: latex
   ansible.builtin.dnf:
     name:
-      - texlive-IEEEtran
+      - texlive-ieeetran
       - texlive-algorithm2e
       - texlive-algorithms
       - texlive-alphalph
@@ -108,7 +108,6 @@
       - texlive-courier
       - texlive-csquotes
       - texlive-csvsimple
-      - texlive-csvsimple-doc
       - texlive-ctablestack
       - texlive-currfile
       - texlive-datetime2
@@ -197,7 +196,6 @@
       - texlive-luatex
       - texlive-luatexbase
       - texlive-makecell
-      - texlive-makecell-doc
       - texlive-makecmds
       - texlive-makeindex
       - texlive-manfnt-font
@@ -235,7 +233,6 @@
       - texlive-pdftexcmds
       - texlive-pgf
       - texlive-pgfplots
-      - texlive-pgfplots-doc
       - texlive-picture
       - texlive-placeins
       - texlive-plain
@@ -276,7 +273,6 @@
       - texlive-tex-gyre
       - texlive-tex-gyre-math
       - texlive-tex-ini-files
-      - texlive-texlive-common-doc
       - texlive-texlive-en
       - texlive-texlive-msg-translations
       - texlive-texlive-scripts
@@ -289,7 +285,6 @@
       - texlive-txfonts
       - texlive-ucharcat
       - texlive-ulem
-      - texlive-ulem-doc
       - texlive-underscore
       - texlive-unicode-data
       - texlive-unicode-math
@@ -326,9 +321,8 @@
     state: latest
     name:
       - cc.arduino.IDE2
-      - com.discordapp.Discord
       - com.github.tchx84.Flatseal
+      - com.orcaslicer.OrcaSlicer
       - com.prusa3d.PrusaSlicer
       - org.musicbrainz.Picard
       - org.videolan.VLC
-      - us.zoom.Zoom
