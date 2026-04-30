@@ -39,10 +39,16 @@
     group: "{{ lookup('env', 'USER') }}"
     mode: '0755'
 
+- name: Create ~/.local/bin/ directory
+  become: false
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.local/bin"
+    state: directory
+
 - name: Copy bin directory
   ansible.posix.synchronize:
-    src: "./files/bin"
-    dest: "{{ lookup('env', 'HOME') }}/"
+    src: "./files/bin/"
+    dest: "{{ lookup('env', 'HOME') }}/.local/bin"
     recursive: true
 
 - name: Change shell

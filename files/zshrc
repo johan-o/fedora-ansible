@@ -12,7 +12,7 @@ alias q="exit"
 
 alias cqtr="cd $HOME/Documents/cqtr"
 
-export PATH="$HOME/bin:/$HOME/.local/bin:/usr/local/sbin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export EDITOR="vim"
 
 RPROMPT="%n@%m %(?..[%?]) %*"
@@ -38,3 +38,7 @@ fi
 
 alias gs='git status'
 
+if [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+return
