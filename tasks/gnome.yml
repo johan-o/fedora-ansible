@@ -126,12 +126,16 @@
     value: true
     state: present
 
-# Timezone
 - name: "Set timezone to America/Los_Angeles"
   community.general.timezone:
     name: America/Los_Angeles
 
-# Extensions
+- name: "Gnome: Set monday as first day of week"
+  community.general.dconf:
+    key: "/org/gnome/desktop/calendar/week-start-day"
+    value: "'monday'"
+    state: present
+
 - name: "Check gnome enabled extensions"
   community.general.dconf:
     key: "/org/gnome/shell/enabled-extensions"
