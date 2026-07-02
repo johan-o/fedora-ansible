@@ -1,14 +1,14 @@
-rename "s/ /-/g" *
-rename "s/_/-/g" *
-rename "s/–/-/g" *
-rename "s/://g" *
-rename "s/\(//g" *
-rename "s/\)//g" *
-rename "s/\[//g" *
-rename "s/\]//g" *
-rename 's/"//g' *
-rename "s/'//g" *
-rename "s/,//g" *
-rename "y/A-Z/a-z/" *
-rename "s/---/--/g" *
-rename "s/-‎--/--/g" *
+prename "s/ /-/g" *
+prename "s/_/-/g" *
+prename "s/–/-/g" *
+prename "s/://g" *
+prename "s/\(//g" *
+prename "s/\)//g" *
+prename "s/\[//g" *
+prename "s/\]//g" *
+prename 's/"//g' *
+prename "s/'//g" *
+prename "s/,//g" *
+prename "y/A-Z/a-z/" *
+prename "s/---/--/g" *
+prename "s/-‎--/--/g" *
