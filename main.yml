@@ -1,5 +1,5 @@
 - name: Configure Fedora Workstation install
-  hosts: localhost
+  hosts: all, localhost
   become: true
 
   pre_tasks:
@@ -51,8 +51,8 @@
     - name: Update dracut
       ansible.builtin.shell: sudo dracut --regenerate-all --force
 
-- name: OS independent configuration
-  hosts: localhost
+- name: User configuration
+  hosts: all, localhost
   become: false
 
   pre_tasks:
@@ -91,6 +91,11 @@
           when: desktop == "GNOME"
           ansible.builtin.include_tasks: tasks/ptyxis.yml
         
-    - name: Configure zsh
-      ansible.builtin.import_tasks: tasks/zsh.yml
-      when: zsh
+    - name: Configure shell
+      when: (zsh is defined) and zsh
+      block:
+        - ansible.builtin.import_tasks: tasks/zsh.yml
+
+        - ansible.builtin.import_tasks: tasks/zsh.yml
+          become: true
+      tags: zsh
