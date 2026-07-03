@@ -22,21 +22,18 @@
     src: "zshrc"
     dest: "{{ lookup('env', 'HOME') }}/.zshrc"
     owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
     mode: '0755'
 - name: Copy .vimrc
   ansible.builtin.copy:
     src: "vimrc"
     dest: "{{ lookup('env', 'HOME') }}/.vimrc"
     owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
     mode: '0755'
 - name: Copy .tmux.conf
   ansible.builtin.copy:
     src: "tmux.conf"
     dest: "{{ lookup('env', 'HOME') }}/.tmux.conf"
     owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
     mode: '0755'
 
 - name: Copy bin directory

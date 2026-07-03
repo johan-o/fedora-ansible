@@ -12,8 +12,14 @@ if ! [ -d "${tdir}" ]; then
 	tdir="$HOME/Documents/todo-lists"
 fi
 
+dateCommand=date
+case "$OSTYPE" in
+  darwin*)  dateCommand=gdate ;;
+  *)        dateCommand=date ;;
+esac
+
 # make directories recursively
-tpath="${tdir}/lists/$(date --date $offset +%Y)/$(date --date $offset +%m)"
+tpath="${tdir}/lists/$($dateCommand --date $offset +%Y)/$($dateCommand --date $offset +%m)"
 mkdir -p $tpath
 
 # update git repo
@@ -40,12 +46,12 @@ if [ -z ${TMUX+x} ]; then
 	tmux a -t "${SESSION_NAME}"
 else 
 	# getting path + name of list
-	filename="${tpath}/$(date --date $offset +%F)"
+	filename="${tpath}/$($dateCommand --date $offset +%F)"
 	
 	# checking if file exists
 	if ! [ -f "${filename}.md" ]; then
 		touch "${filename}.md"
-		echo "# To Do List $(date --date $offset +'%A %F')" > "${filename}.md"
+		echo "# To Do List $($dateCommand --date $offset +'%A %F')" > "${filename}.md"
 		cat "${tdir}/header.md" | sed 's/\/\/.*//' | cat -s >> "${filename}.md"
 	fi
 
@@ -59,6 +65,6 @@ else
 	git add "${tdir}"
 	git restore --staged "${tdir}/lists"
 	git add "${filename}.*"
-	git commit -m "updated $(date --date $offset +%F)"
+	git commit -m "updated $($dateCommand --date $offset +%F)"
 	git push
 fi
