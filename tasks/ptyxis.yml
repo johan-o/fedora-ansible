@@ -1,11 +1,11 @@
-- name: disable primary-menu shortcut
+- name: Disable primary-menu shortcut
   community.general.dconf:
     key: '/org/gnome/Ptyxis/Shortcuts/primary-menu'
     value: "''"
     state: present
 
-- name: get default UUID from /org/gnome/Ptyxis/default-profile-uuid
-  community.general.dconf: 
+- name: Get default UUID from /org/gnome/Ptyxis/default-profile-uuid
+  community.general.dconf:
     key: "/org/gnome/Ptyxis/default-profile-uuid"
     state: read
   register: ptyxis_default_uuid

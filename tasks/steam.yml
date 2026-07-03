@@ -5,7 +5,7 @@
 
 - name: Install gayming packages
   ansible.builtin.dnf:
-    name: 
+    name:
       - goverlay
       - mangohud
       - dwarffortress

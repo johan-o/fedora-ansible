@@ -24,4 +24,3 @@
     - "{{ lookup('env', 'HOME') }}/.local/share/applications/libreoffice-writer.desktop"
     - "{{ lookup('env', 'HOME') }}/.local/share/applications/libreoffice-xsltfilter.desktop"
   when: (hide_libreoffice is not defined) or (not hide_libreoffice)
-

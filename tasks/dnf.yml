@@ -3,7 +3,7 @@
     dest: "/etc/dnf/dnf.conf"
     regexp: "^max_parallel_downloads"
     line: "max_parallel_downloads=10"
-    
+
 - name: Remove unnecessary preinstalled DNF packages
   ansible.builtin.dnf:
     state: removed
@@ -41,14 +41,14 @@
         - "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
 
     - name: Enable the RPM Fusion repositories
-      dnf:
-        name: 
-          - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_facts['distribution_major_version']}}.noarch.rpm"
-          - "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ansible_facts['distribution_major_version']}}.noarch.rpm"
+      ansible.builtin.dnf:
+        name:
+          - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
+          - "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
         state: present
 
 - name: Update all DNF packages
   ansible.builtin.dnf:
     name: "*"
-    state: latest
-    update_cache: yes
+    state: latest # noqa: package-latest
+    update_cache: true

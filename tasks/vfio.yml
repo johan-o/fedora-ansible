@@ -1,27 +1,30 @@
-- name: IOMMU / VFIO 
+- name: IOMMU / VFIO
   when: (vfio_ids is defined)
   block:
-    - name: intel_iommu, amd_iommu, iommu kernel arguments
-      block: 
-        - name: Add amd_iommu for x86-64 AMD CPUs
-          ansible.builtin.shell: "sudo grubby --update-kernel=ALL --args='amd_iommu=on'"
-          when: 
-            ('AuthenticAMD' in ansible_facts["processor"]) and 
-            ('amd_iommu' not in ansible_facts["cmdline"])
-
-        - name: Add intel_iommu for x86-64 Intel CPUs
-          ansible.builtin.shell: "sudo grubby --update-kernel=ALL --args='intel_iommu=on'"
-          when: 
-            ('GenuineIntel' in ansible_facts["processor"]) and 
-            ('intel_iommu' not in ansible_facts["cmdline"])
-
-        - name: Add iommu=pt for x86-64 CPUs
-          ansible.builtin.shell: "sudo grubby --update-kernel=ALL --args='iommu=pt'"
-          when: 
-            ("iommu" not in ansible_facts["cmdline"])
-      when: 
+    - name: Add intel_iommu, amd_iommu, iommu kernel arguments
+      when:
         ('x86_64' in ansible_facts["userspace_architecture"]) and
         ansible_facts["os_family"] == 'RedHat'
+      block:
+        - name: Add amd_iommu for x86-64 AMD CPUs
+          ansible.builtin.command: "grubby --update-kernel=ALL --args='amd_iommu=on'"
+          when:
+            ('AuthenticAMD' in ansible_facts["processor"]) and
+            ('amd_iommu' not in ansible_facts["cmdline"])
+          changed_when: true
+
+        - name: Add intel_iommu for x86-64 Intel CPUs
+          ansible.builtin.command: "grubby --update-kernel=ALL --args='intel_iommu=on'"
+          when:
+            ('GenuineIntel' in ansible_facts["processor"]) and
+            ('intel_iommu' not in ansible_facts["cmdline"])
+          changed_when: true
+
+        - name: Add iommu=pt for x86-64 CPUs
+          ansible.builtin.command: "grubby --update-kernel=ALL --args='iommu=pt'"
+          when:
+            ("iommu" not in ansible_facts["cmdline"])
+          changed_when: true
 
     - name: Copy modules-load.d/vfio.conf file
       ansible.builtin.copy:
@@ -55,7 +58,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
-  with_items: 
+  with_items:
     - "/etc/modules-load.d/vfio.conf"
     - "/etc/modprobe.d/blacklist.conf"
     - "/etc/modprobe.d/vfio.conf"

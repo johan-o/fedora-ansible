@@ -1,4 +1,4 @@
-- name: Create .config/Code/User directory
+- name: Create .config/Code/User directory # noqa: risky-file-permissions Setting permissions breaks this folder somehow
   become: false
   ansible.builtin.file:
     path: "{{ lookup('env', 'HOME') }}/.config/Code/User"
@@ -24,14 +24,15 @@
 
 - name: Get currently installed vscode extensions
   ansible.builtin.command: 'code --list-extensions'
-  register: codeExtensions
+  register: code_extensions
   changed_when: false
 
 - name: Install VS Code vim
   ansible.builtin.command: "code --install-extension {{ item }}"
   with_items:
     - vscodevim.vim
-  when: "'vim' not in codeExtensions.stdout"
+  when: "'vim' not in code_extensions.stdout"
+  changed_when: "'vim' not in code_extensions.stdout"
 
 - name: Install VS Code python extensions
   ansible.builtin.command: "code --install-extension {{ item }}"
@@ -39,7 +40,8 @@
     - ms-python.python
     - ms-python.debugpy
     - ms-python.vscode-pylance
-  when: "'ms-python.python' not in codeExtensions.stdout"
+  when: "'ms-python.python' not in code_extensions.stdout"
+  changed_when: "'ms-python.python' not in code_extensions.stdout"
 
 - name: Install VS Code remote extensions
   ansible.builtin.command: "code --install-extension {{ item }}"
@@ -47,11 +49,12 @@
     - ms-vscode-remote.remote-ssh
     - ms-vscode-remote.remote-ssh-edit
     - ms-vscode.remote-explorer
-  when: "'ms-vscode-remote.remote-ssh' not in codeExtensions.stdout"
+  when: "'ms-vscode-remote.remote-ssh' not in code_extensions.stdout"
+  changed_when: "'ms-vscode-remote.remote-ssh' not in code_extensions.stdout"
 
 - name: Install VS Code colored CSV extension
   ansible.builtin.command: "code --install-extension {{ item }}"
   with_items:
     - mechatroner.rainbow-csv
-  when: "'mechatroner.rainbow-csv' not in codeExtensions.stdout"
-
+  when: "'mechatroner.rainbow-csv' not in code_extensions.stdout"
+  changed_when: "'mechatroner.rainbow-csv' not in code_extensions.stdout"
