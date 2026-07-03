@@ -1,0 +1,13 @@
+#!/bin/bash
+
+links="junk"
+if [ -x "nmcli" ]; then
+    links=$(nmcli --fields name conn show --active | grep -iE "^(bridge|e([a-z])|tail)" | sort );
+else 
+    links=$(ip -o link show | awk -F': ' '{print $2}' | grep -iE "^(bridge|e([a-z])|tail|sfp)" | sort );
+    links=$(ip -o link show | awk -F': ' '{print $2}' | grep -ivE "^(veth|vnet|br-|virbr)|@|(^lo$)" | sort );
+fi
+
+while IFS= read -r line; do
+    ip -c a show "${line}"
+done <<< "$links"

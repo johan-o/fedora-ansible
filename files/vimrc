@@ -13,3 +13,5 @@ set hlsearch
 hi Search cterm=NONE ctermfg=White ctermbg=Red
 
 syntax on
+
+set expandtab

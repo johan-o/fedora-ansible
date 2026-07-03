@@ -10,8 +10,6 @@ export HOMEBREW_NO_ANALYTICS=1
 
 alias q="exit"
 
-alias cqtr="cd $HOME/Documents/cqtr"
-
 export PATH="$HOME/.local/bin:$PATH"
 export EDITOR="vim"
 
