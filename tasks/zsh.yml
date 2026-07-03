@@ -1,55 +1,76 @@
-- name: "zsh: oh-my-zsh"
-  become: false
+- name: Get remote home value
+  ansible.builtin.command: "echo $HOME"
+  register: home
+  changed_when: false
+
+- name: Get remote whoami value
+  ansible.builtin.command: "whoami"
+  register: whoami
+  changed_when: false
+
+- name: Set correct variables
+  ansible.builtin.set_fact:
+    home: "{{ home.stdout }}"
+    user: "{{ whoami.stdout }}"
+
+- name: "Install zsh: oh-my-zsh" # noqa: latest[git]
   ansible.builtin.git:
-    repo: "https://github.com/ohmyzsh/ohmyzsh"
-    dest: "{{ lookup('env', 'HOME') }}/.oh-my-zsh"
+    repo: "{{ item.repo }}"
+    dest: "{{ home }}/{{ item.dest }}"
+  with_items:
+    - {repo: "https://github.com/ohmyzsh/ohmyzsh", dest: ".oh-my-zsh"}
+    - {repo: "https://github.com/zsh-users/zsh-autosuggestions", dest: ".oh-my-zsh/custom/plugins/zsh-autosuggestions"}
+    - {repo: "https://github.com/zsh-users/zsh-syntax-highlighting", dest: ".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"}
 
-- name: "zsh: zsh-autosuggestions"
-  become: false
-  ansible.builtin.git:
-    repo: "https://github.com/zsh-users/zsh-autosuggestions"
-    dest: "{{ lookup('env', 'HOME') }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-
-- name: "zsh: zsh-syntax-highlighting"
-  become: false
-  ansible.builtin.git:
-    repo: "https://github.com/zsh-users/zsh-syntax-highlighting"
-    dest: "{{ lookup('env', 'HOME') }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
-
-# Conf files
-- name: Copy .zshrc
-  ansible.builtin.copy:
-    src: "zshrc"
-    dest: "{{ lookup('env', 'HOME') }}/.zshrc"
-    owner: "{{ lookup('env', 'USER') }}"
-    mode: '0755'
-- name: Copy .vimrc
-  ansible.builtin.copy:
-    src: "vimrc"
-    dest: "{{ lookup('env', 'HOME') }}/.vimrc"
-    owner: "{{ lookup('env', 'USER') }}"
-    mode: '0755'
-- name: Copy .tmux.conf
-  ansible.builtin.copy:
-    src: "tmux.conf"
-    dest: "{{ lookup('env', 'HOME') }}/.tmux.conf"
-    owner: "{{ lookup('env', 'USER') }}"
-    mode: '0755'
-
-- name: Create ~/.local/bin/ directory
-  become: false
+- name: Create config directories
   ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.local/bin"
+    path: "{{ home }}/{{ item }}"
     state: directory
+    mode: '0755'
+  with_items:
+    - ".config"
+    - ".config/htop"
 
-- name: Copy bin directory
-  ansible.posix.synchronize:
-    src: "./files/bin/"
-    dest: "{{ lookup('env', 'HOME') }}/.local/bin"
-    recursive: true
+- name: Copy configuration files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ home }}/{{ item.dest }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0755'
+  with_items:
+    - {src: "zshrc", dest: ".zshrc"}
+    - {src: "vimrc", dest: ".vimrc"}
+    - {src: "tmux.conf", dest: ".tmux.conf"}
+    - {src: "htoprc", dest: ".config/htop/htoprc"}
 
-- name: Change shell
+- name: Create ~/.local/bin directory
+  ansible.builtin.file:
+    path: "{{ home }}/{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - ".local"
+    - ".local/bin"
+
+- name: Copy bin directory contents
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ home }}/.local/bin/{{ item | basename }}"
+    mode: '0755'
+  with_fileglob:
+    - bin/*
+
+- name: Ensure SSH keys are created
+  ansible.builtin.user:
+    name: "{{ whoami.stdout }}"
+    generate_ssh_key: true
+    ssh_key_type: ed25519
+    ssh_key_file: ".ssh/id_ed25519.pub"
+    ssh_key_comment: "ansible-generated {{ whoami.stdout }}@{{ ansible_facts['hostname'] }}"
+
+- name: Change shell to zsh
   become: true
   ansible.builtin.user:
-    name: "{{ lookup('env', 'USER') }}"
-    shell: /bin/zsh
+    name: "{{ whoami.stdout }}"
+    shell: "/bin/zsh"
