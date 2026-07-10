@@ -57,10 +57,6 @@ else
 
 	vim "${filename}.md"
 
-	if [[ $# -eq "0" ]] ; then
-		cp "${tdir}/typst/todo.pdf" "${filename}.pdf"
-	fi
-	
 	# janky git adding tdl file, all non-list files
 	git add "${tdir}"
 	git restore --staged "${tdir}/lists"
