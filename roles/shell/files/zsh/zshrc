@@ -1,0 +1,88 @@
+# --- History ---
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt HIST_IGNORE_DUPS HIST_IGNORE_SPACE SHARE_HISTORY EXTENDED_HISTORY
+
+# --- Shell behavior ---
+setopt AUTO_CD AUTO_PUSHD PUSHD_IGNORE_DUPS PUSHD_SILENT
+setopt INTERACTIVE_COMMENTS COMPLETE_IN_WORD ALWAYS_TO_END LONG_LIST_JOBS
+bindkey -e
+
+# Keys oh-my-zsh used to set up (Home/End/Delete, Ctrl+arrows)
+[[ -n $terminfo[khome] ]] && bindkey $terminfo[khome] beginning-of-line
+[[ -n $terminfo[kend]  ]] && bindkey $terminfo[kend]  end-of-line
+[[ -n $terminfo[kdch1] ]] && bindkey $terminfo[kdch1] delete-char
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+
+# --- Environment ---
+typeset -U path                       # dedupe PATH
+export PATH="$HOME/.local/bin:$PATH"
+export EDITOR="vim"
+export HOMEBREW_NO_ANALYTICS=1
+if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+# --- Completion ---
+autoload -Uz compinit
+_zcd=(~/.zcompdump(N.mh+24))          # dump older than 24h?
+if (( $#_zcd )); then compinit; else compinit -C; fi
+unset _zcd
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# --- Prompt (robbyrussell look-alike) ---
+autoload -Uz vcs_info
+precmd() { vcs_info }
+setopt PROMPT_SUBST
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' unstagedstr ' %F{yellow}✗%f'
+zstyle ':vcs_info:git:*' formats ' %B%F{blue}(%F{red}%b%F{blue})%f%%b%u'
+PROMPT='%(?.%B%F{green}.%B%F{red})➜%b%f %B%F{cyan}%c%f%b${vcs_info_msg_0_} '
+RPROMPT='%n@%m %(?..[%?]) %*'
+
+# --- Aliases ---
+alias g='git'
+alias ga='git add'
+alias gs='git status'
+alias gc='git commit'
+
+alias l='ls -lah'
+alias ls='ls --color=auto'
+alias ll='ls -lah'
+alias la='ls -A'
+
+alias grep='grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox,.venv,venv}'
+
+alias ...='cd ../..'
+if [[ $OSTYPE == linux* ]]; then
+    alias open='xdg-open'
+fi
+
+# --- Colored man pages ---
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'
+export GROFF_NO_SGR=1
+
+# --- Show sysinfo on login if the machine is idle ---
+if [[ -z $TMUX ]] && (( $+commands[sysinfo] )); then
+    read -r _load _ < /proc/loadavg
+    (( _load < $(nproc) )) && sysinfo
+    unset _load
+fi
+
+# --- Plugins (syntax-highlighting last-ish; substring-search after it) ---
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey '^[OA' history-substring-search-up
+bindkey '^[OB' history-substring-search-down

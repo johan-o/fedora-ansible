@@ -41,6 +41,8 @@
       - vim
       - xclip
       - zsh
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
 
 - name: Install ffmpeg and video drivers/codec
   ansible.builtin.dnf:
