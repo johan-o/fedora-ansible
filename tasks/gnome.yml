@@ -64,12 +64,6 @@
     value: true
     state: present
 
-- name: "Gnome: disable inactive sleep on AC"
-  community.general.dconf:
-    key: "/org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-type"
-    value: "'nothing'"
-    state: present
-
 - name: "Gnome: Pin apps"
   community.general.dconf:
     key: "/org/gnome/shell/favorite-apps"
