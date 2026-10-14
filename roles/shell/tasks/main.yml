@@ -1,0 +1,68 @@
+---
+- name: Look up account details for {{ shell_user }}
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ shell_user }}"
+
+- name: Set home directory for {{ shell_user }}
+  ansible.builtin.set_fact:
+    user_home: "{{ getent_passwd[shell_user][4] }}"
+
+- name: Install-zsh-history-substring-search
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ user_home }}/{{ item.dest }}"
+  loop:
+    - { repo: "https://github.com/zsh-users/zsh-history-substring-search", dest: ".zsh/zsh-history-substring-search" }
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Create config directories
+  ansible.builtin.file:
+    path: "{{ user_home }}/{{ item }}"
+    state: directory
+    mode: "0700"
+  loop:
+    - .config
+    - .config/htop
+
+- name: Copy configuration files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ user_home }}/{{ item.dest }}"
+    mode: "0644"
+  loop:
+    - { src: zsh/zshrc, dest: .zshrc }
+    - { src: zsh/vimrc, dest: .vimrc }
+    - { src: zsh/tmux.conf, dest: .tmux.conf }
+    - { src: zsh/htoprc, dest: .config/htop/htoprc }
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Recursively remove old ~/.oh-my-zsh directory
+  ansible.builtin.file:
+    path: "{{ user_home }}/.oh-my-zsh"
+    state: absent
+
+- name: Create ~/.local/bin directory
+  ansible.builtin.file:
+    path: "{{ user_home }}/{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - .local
+    - .local/bin
+
+- name: Copy bin directory contents
+  ansible.builtin.copy:
+    src: bin/
+    dest: "{{ user_home }}/.local/bin/"
+    mode: "0755"
+
+- name: Ensure SSH keys are created
+  ansible.builtin.user:
+    name: "{{ shell_user }}"
+    generate_ssh_key: true
+    ssh_key_type: ed25519
+    ssh_key_file: .ssh/id_ed25519
+    ssh_key_comment: "ansible-generated {{ shell_user }}@{{ ansible_facts['hostname'] }}"

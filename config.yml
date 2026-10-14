@@ -9,7 +9,9 @@ vfio_ids:
   - 10de:1ad8
   - 10de:1ad9
   - 10de:1eb1
+  - 10ec:3000
   - 1b73:1100
 virtualization: true
 vscode: true
 zsh: true
+shell_user: "{{ ansible_user | default(lookup('env', 'USER')) }}"

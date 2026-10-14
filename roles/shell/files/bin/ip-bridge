@@ -1,0 +1,18 @@
+#!/bin/bash
+
+links="junk"
+
+if which nmcli > /dev/null; then
+    links=$(nmcli --fields device conn show --active | grep -iE "^(br|e([a-z])|tail)" | sed 's/[[:space:]]*$//' );
+else 
+    links=$(ip -o link show | awk -F': ' '{print $2}' | grep -iE "^(br[^-]|e([a-z])|tail|sfp|vlan)" | sed 's/@.*//');
+fi
+
+links=$(echo "${links}" | sort)
+
+while IFS= read -r line; do
+    if grep -E "br|vlan" <<< "${line}" > /dev/null; then 
+        ip r | grep "${line}" > /dev/null && ip -c a show "${line}";
+    else ip -c a show "${line}";
+    fi
+done <<< "$links"

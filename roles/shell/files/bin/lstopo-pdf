@@ -1,0 +1,8 @@
+cores=$(lscpu --online --parse=Core,Socket | grep -vE "^#" | sort --unique | wc -l | sed 's/ /-/g')
+model=$(cat /proc/cpuinfo| grep 'model name' | sed 's/.*: //' | sed 's/([A-Z]*)//g' | sed 's/ *@.*//' | sed 's/ /-/g' | sort --unique)
+
+filename="$(hostname --short)-${model}--${cores}C.pdf"
+
+lstopo --of pdf > ${filename}
+
+echo "${filename}"
